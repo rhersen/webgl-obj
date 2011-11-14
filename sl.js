@@ -26,9 +26,11 @@ function extract(html, script, done) {
         }
 
         function createDeparture() {
+            var delayedTime = /Ny tid ca ([0-9:]+)/.exec(getChildText(2, this));
             return {
-                time : getChildText(0, this),
-                destination : getChildText(1, this)
+                delayed: delayedTime !== null,
+                time: delayedTime ? delayedTime[1] : getChildText(0, this),
+                destination: getChildText(1, this)
             };
 
             function getChildText(i, parent) {

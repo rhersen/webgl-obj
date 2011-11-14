@@ -3,7 +3,7 @@ var fs = require('fs');
 var sl = require('./sl');
 
 if (process.argv.length === 2) {
-    getLocal('spec/9525.html');
+    getLocal('spec/delay.html');
 } else {
     getRemote('http://mobilrt.sl.se/?tt=TRAIN&SiteId=' + process.argv[2]);
 }
@@ -12,7 +12,7 @@ function printResult(result) {
     console.log(result.station + '\t' + result.updated);
     for (var i = 0; i < result.departures.length; i++) {
         var obj = result.departures[i];
-        console.log(obj.time + '\t' + obj.destination);
+        console.log(obj.time + (obj.delayed ? '*' : '') + '\t' + obj.destination);
     }
 }
 
