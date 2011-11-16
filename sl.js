@@ -22,7 +22,8 @@ function extract(html, script, done) {
         };
 
         function getMatch(regExp, parent, selector) {
-            return regExp.exec(parent.find(selector).text())[1];
+            var match = regExp.exec(parent.find(selector).text());
+            return match ? match[1] : undefined;
         }
 
         function createDeparture() {

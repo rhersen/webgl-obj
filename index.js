@@ -17,11 +17,22 @@ function printResult(result) {
 }
 
 function getRemote(uri) {
-    console.log(uri);
-    request({ uri: uri, headers: { "user-agent": "node.js" } },
+    var params = {
+        uri: uri,
+        headers: {
+            "user-agent": "node.js"
+        }
+    };
+    request(params,
             function (error, response, body) {
-                if (error && response.statusCode !== 200) {
-                    console.log(error);
+                if (error) {
+                    console.log(error.message);
+                    return;
+                }
+
+                if (response.statusCode !== 200) {
+                    console.log(response.statusCode);
+                    return;
                 }
 
                 sl.extract(body, 'jquery-1.6.min.js', printResult);

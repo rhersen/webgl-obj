@@ -21,7 +21,7 @@ describe('jasmine-node', function() {
 
     it('should handle times with one delay', function() {
         var file = fs.readFileSync('spec/delay.html', 'utf-8');
-        expect(file.length).toEqual(8531);
+        expect(file.length).toEqual(8456);
         sl.extract(file, '../jquery-1.6.min.js', function (result) {
             expect(result.station).toEqual('Stuvsta');
             expect(result.updated).toEqual('17:07');
@@ -32,6 +32,16 @@ describe('jasmine-node', function() {
             expect(result.departures[0].time).toEqual('17:09');
             expect(result.departures[0].delayed).toBeTruthy();
             expect(result.departures[0].destination).toEqual('Tumba');
+            asyncSpecDone();
+        });
+        asyncSpecWait();
+    });
+
+    it('should handle html without the expected id tags', function() {
+        var file = fs.readFileSync('spec/index.html', 'utf-8');
+        expect(file.length).toEqual(7813);
+        sl.extract(file, '../jquery-1.6.min.js', function (result) {
+            expect(result.departures.length).toEqual(0);
             asyncSpecDone();
         });
         asyncSpecWait();
