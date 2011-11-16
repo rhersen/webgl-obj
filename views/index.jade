@@ -1,0 +1,7 @@
+h1= title
+p Welcome to Express
+ol
+  - each station in stations
+    li
+      a(href="station/#{station.id}")
+        #{station.name}
