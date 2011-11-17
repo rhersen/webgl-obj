@@ -39,7 +39,6 @@ describe('jasmine-node', function() {
 
     it('should handle html without the expected id tags', function() {
         var file = fs.readFileSync('spec/index.html', 'utf-8');
-        expect(file.length).toEqual(7813);
         sl.extract(file, '../jquery-1.6.min.js', function (result) {
             expect(result.departures.length).toEqual(0);
             asyncSpecDone();

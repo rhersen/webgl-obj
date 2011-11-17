@@ -1,6 +1,6 @@
 var jsdom = require('jsdom');
 
-function extract(html, script, done) {
+exports.extract = function (html, script, done) {
     var params = {
         html: html,
         scripts: [ script ]
@@ -9,7 +9,7 @@ function extract(html, script, done) {
     jsdom.env(params, function (err, window) {
         done(scrape(window));
     });
-    
+
     function scrape(window) {
         var $ = window.jQuery;
         var div = $('div#ctl00_FormRegion_MainRegion_ctl00_ResultHolder div');
@@ -39,6 +39,8 @@ function extract(html, script, done) {
             }
         }
     }
-}
+};
 
-exports.extract = extract;
+exports.getUri = function (id) {
+    return 'http://mobilrt.sl.se/?tt=TRAIN&SiteId=' + id;
+};

@@ -34,32 +34,26 @@ app.configure('production', function() {
 app.get('/', routes.index);
 
 app.get('/station/:id', function(req, res) {
-    getRemote('http://mobilrt.sl.se/?tt=TRAIN&SiteId=' + req.params.id);
-    function getRemote(uri) {
-        var params = {
-            uri: uri,
-            headers: {
-                "user-agent": "node.js"
-            }
-        };
-        request(params,
-                function (error, response, body) {
-                    if (error) {
-                        console.log(error.message);
-                        return;
-                    }
-
-                    if (response.statusCode !== 200) {
-                        console.log(response.statusCode);
-                        return;
-                    }
-
-                    sl.extract(body, 'jquery-1.6.min.js', printResult);
-                });
-
-        function printResult(result) {
-            res.render('station', result);
+    var params = {
+        uri: sl.getUri(req.params.id),
+        headers: {
+            "user-agent": "node.js"
         }
+    };
+    request(params,
+            function (error, response, body) {
+                if (error) {
+                    console.log(error.message);
+                        return;
+                }
+                if (response.statusCode !== 200) {
+                    console.log(response.statusCode);
+                        return;
+                }
+                sl.extract(body, 'jquery-1.6.min.js', handleResult);
+            });
+    function handleResult(result) {
+        res.render('station', result);
     }
 });
 
