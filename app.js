@@ -1,5 +1,5 @@
 var express = require('express');
-var routes = require('./routes');
+var routes = require('./routes/routes');
 
 var app = module.exports = express.createServer();
 
