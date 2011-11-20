@@ -1,13 +1,13 @@
 var jsdom = require('jsdom');
 
-exports.extract = function (html, script, done) {
+exports.extract = function (html, script, done, res) {
     var params = {
         html: html,
         scripts: [ script ]
     };
 
     jsdom.env(params, function (err, window) {
-        done(scrape(window));
+        done(scrape(window), res);
     });
 
     function scrape(window) {
@@ -18,7 +18,7 @@ exports.extract = function (html, script, done) {
         return {
             station: getMatch(/(.+) \(/, div, 'b:first'),
             updated: getMatch(/Uppdaterat kl ([0-9:]+)/, div, 'div:first'),
-            departures: table.map(createDeparture)
+            departures: createDepartures(table)
         };
 
         function getMatch(regExp, parent, selector) {
@@ -26,12 +26,20 @@ exports.extract = function (html, script, done) {
             return match ? match[1] : undefined;
         }
 
-        function createDeparture() {
-            var delayedTime = /Ny tid ca ([0-9:]+)/.exec(getChildText(2, this));
+        function createDepartures(table) {
+            var r = [];
+            for (var i = 0; i < table.length; i++) {
+                r.push(createDeparture(table[i]));
+            }
+            return r;
+        }
+
+        function createDeparture(e) {
+            var delayedTime = /Ny tid ca ([0-9:]+)/.exec(getChildText(2, e));
             return {
                 delayed: delayedTime !== null,
-                time: delayedTime ? delayedTime[1] : getChildText(0, this),
-                destination: getChildText(1, this)
+                time: delayedTime ? delayedTime[1] : getChildText(0, e),
+                destination: getChildText(1, e)
             };
 
             function getChildText(i, parent) {
