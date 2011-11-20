@@ -11,31 +11,19 @@ exports.index = function(req, res) {
     })
 };
 
-exports.html = function(req, res) {
-    getDepartures(req.params.id, res, function (result, res) {
-        res.render('station', result);
-    });
-};
-
-exports.json = function(req, res) {
-    getDepartures(req.params.id, res, function (result, res) {
-        res.send(result);
-    });
-};
-
-function getDepartures(stationId, res, done) {
-    request(createParams(),
+exports.departures = function(req, res) {
+    request(createParams(req.params.id),
             function (error, response, body) {
                 if (error) {
                     console.log(error.message);
                 } else if (response.statusCode !== 200) {
                     console.log(response.statusCode);
                 } else {
-                    sl.extract(body, 'jquery-1.6.min.js', done, res);
+                    sl.extract(body, 'jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
                 }
             });
 
-    function createParams() {
+    function createParams(stationId) {
         return {
             uri: sl.getUri(stationId),
             headers: {
@@ -43,4 +31,12 @@ function getDepartures(stationId, res, done) {
             }
         };
     }
-}
+
+    function sendHtml(result, response) {
+        response.render('station', result);
+    }
+
+    function sendJson(result, response) {
+        response.send(result);
+    }
+};

@@ -21,8 +21,7 @@ app.configure('production', function() {
 });
 
 app.get('/', routes.index);
-app.get('/html/:id', routes.html);
-app.get('/json/:id', routes.json);
+app.get('/departures/:id.:format?', routes.departures);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
