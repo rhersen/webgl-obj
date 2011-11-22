@@ -35,14 +35,14 @@ function getRemote(uri) {
                     return;
                 }
 
-                sl.extract(body, 'jquery-1.6.min.js', printResult);
+                sl.extract(body, 'public/jquery-1.6.min.js', printResult);
             });
 }
 
 function getLocal(filename) {
     fs.readFile(filename, function (err, file) {
         if (err) throw err;
-        sl.extract(file, 'jquery-1.6.min.js', printResult);
+        sl.extract(file, 'public/jquery-1.6.min.js', printResult);
     });
 }
 

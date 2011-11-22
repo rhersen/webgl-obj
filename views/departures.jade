@@ -1,0 +1,11 @@
+h1= station
+p= updated
+table
+  - each departure in departures
+    tr
+      td
+        = departure.delayed
+      td
+        = departure.time
+      td
+        = departure.destination

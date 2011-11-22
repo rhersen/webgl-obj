@@ -11,6 +11,13 @@ exports.index = function(req, res) {
     })
 };
 
+exports.station = function(req, res) {
+    res.render('station', {
+        title: 'Station',
+        id: req.params.id
+    })
+};
+
 exports.departures = function(req, res) {
     request(createParams(req.params.id),
             function (error, response, body) {
@@ -19,7 +26,7 @@ exports.departures = function(req, res) {
                 } else if (response.statusCode !== 200) {
                     console.log(response.statusCode);
                 } else {
-                    sl.extract(body, 'jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
+                    sl.extract(body, 'public/jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
                 }
             });
 
@@ -33,7 +40,7 @@ exports.departures = function(req, res) {
     }
 
     function sendHtml(result, response) {
-        response.render('station', result);
+        response.render('departures', result);
     }
 
     function sendJson(result, response) {
