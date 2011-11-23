@@ -1,14 +1,16 @@
-#title= title
-#updated updated
+div
+  span#id= id
+  span#title= title
+  span#updated updated
+  #expired ?
 table#departures
   tr
     td#time time
     td#destination destination
-#id= id
 script
   var exports = {};
   $(document).ready(function() {
       $.getScript("/station.js", function() {
-          exports.init($, $('#id').text());
+          exports.init($, $('#id').text(), 100);
       })
   });

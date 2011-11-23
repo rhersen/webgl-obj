@@ -1,0 +1,13 @@
+#title {
+    font-size: 24pt;
+}
+
+#id {
+    color: gray;
+    font-style: italic;
+    font-size: small;
+}
+
+td {
+    background: #adff2f;
+}
