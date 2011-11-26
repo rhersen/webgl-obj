@@ -17,6 +17,7 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last :first-child').html(departure.time);
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :last-child').html(departure.destination);
+        lib('table#departures tr:last').append('<td class="countdown"></td>');
     }
 }
 
@@ -25,25 +26,37 @@ exports.getResponseTime = function () {
 };
 
 function isExpired(now) {
-    return now - responseTime > 10000;
+    return now - responseTime > 23000;
 }
 
-function sendRequest(lib, id) {
-    lib.getJSON('/departures/' + id + '.json', '', function (data) {
-        setResult(lib, data, new Date().getTime());
-    });
-}
 exports.init = function(lib, id, interval) {
     sendRequest(lib, id);
+
     if (interval) {
         setInterval(tick, interval);
     }
 
+    function sendRequest(lib, id) {
+        lib.getJSON('/departures/' + id + '.json', '', function (result) {
+            setResult(lib, result, new Date().getTime());
+        });
+    }
+
     function tick() {
         lib('#expired').html((new Date().getTime() - responseTime));
+        setCountdowns();
+        
         if (isExpired(new Date().getTime())) {
             responseTime = undefined;
             sendRequest(lib, id);
+        }
+
+        function setCountdowns() {
+            var now = new Date();
+            lib('table#departures tr').each(function () {
+                var time = $(this).find(':first-child').html();
+                $(this).find(':last-child').html(getCountdown(time, now));
+            });
         }
     }
 };
