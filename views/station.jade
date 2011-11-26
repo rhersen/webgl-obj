@@ -8,9 +8,11 @@ table#departures
     td#time time
     td#destination destination
 script
-  var exports = {};
-  $(document).ready(function() {
-      $.getScript("/station.js", function() {
-          exports.init($, $('#id').text(), 100);
-      })
-  });
+    var exports = {};
+    $(document).ready(function() {
+        $.getScript("/countdown.js", function() {
+            $.getScript("/station.js", function() {
+                exports.init($, $('#id').text(), 256);
+            })
+        })
+    });

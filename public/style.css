@@ -11,3 +11,7 @@
 td {
     background: #adff2f;
 }
+
+td.countdown {
+    text-align: right;
+}
