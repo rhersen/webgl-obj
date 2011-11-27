@@ -13,11 +13,15 @@ function setResult(lib, result, currentTimeMillis) {
 
     function createTableRow(departure) {
         lib('table#departures').append('<tr></tr>');
+        if (departure.delayed) {
+            lib('table#departures tr:last').addClass('delayed');
+        }
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :first-child').html(departure.time);
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :last-child').html(departure.destination);
-        lib('table#departures tr:last').append('<td class="countdown"></td>');
+        lib('table#departures tr:last').append('<td></td>').addClass('countdown');
+        lib('table#departures tr:last td:last').addClass('countdown');
     }
 }
 
@@ -45,7 +49,7 @@ exports.init = function(lib, id, interval) {
     function tick() {
         lib('#expired').html((new Date().getTime() - responseTime));
         setCountdowns();
-        
+
         if (isExpired(new Date().getTime())) {
             responseTime = undefined;
             sendRequest(lib, id);

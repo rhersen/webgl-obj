@@ -8,8 +8,12 @@
     font-size: small;
 }
 
-td {
+tr {
     background: #adff2f;
+}
+
+tr.delayed {
+    background: #f08080;
 }
 
 td.countdown {
