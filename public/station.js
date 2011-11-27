@@ -20,7 +20,7 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last :first-child').html(departure.time);
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :last-child').html(departure.destination);
-        lib('table#departures tr:last').append('<td></td>').addClass('countdown');
+        lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last td:last').addClass('countdown');
     }
 }

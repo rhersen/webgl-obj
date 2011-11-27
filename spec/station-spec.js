@@ -18,6 +18,8 @@ describe('station', function () {
                 },
                 append:function () {
                 },
+                addClass:function () {
+                },
                 remove:function () {
                     called['remove'] = selector;
                 }
