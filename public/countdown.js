@@ -1,9 +1,22 @@
-function getCountdown(time, now) {
-    var departureMinute = time.substring(3);
-    var nowMillis = now.getTime() % 3600000;
-    return calc(departureMinute * 60000 - nowMillis + 3600000);
+function getCountdown(time, nowTime) {
+    var MINUTES = 60000;
+    var HOURS = 60 * MINUTES;
+    var countdown = getDeparture(time) - getNow(nowTime);
 
-    function calc(millis) {
+    return countdown < 0 ? '-' + format(-countdown) : format(countdown);
+
+    function getDeparture(time) {
+        var hour = time.substring(0, 2);
+        var minute = time.substring(3);
+        return hour * HOURS + minute * MINUTES;
+    }
+
+    function getNow(nowTime) {
+        var offset = nowTime.getTimezoneOffset() * MINUTES;
+        return (nowTime.getTime() - offset) % (24 * HOURS);
+    }
+
+    function format(millis) {
         var minutes = div(millis, 60000) % 60;
         var seconds = div(millis, 1000) % 60;
         var tenths = div(millis, 100) % 10;
@@ -15,6 +28,5 @@ function getCountdown(time, now) {
         }
     }
 }
-
 
 exports.getCountdown = getCountdown;

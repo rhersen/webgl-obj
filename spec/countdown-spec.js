@@ -16,4 +16,24 @@ describe('countdown', function () {
     it('should handle departures next hour', function () {
         expect(countdown.getCountdown("18:01", new Date(1322152747000))).toEqual("21:53.0");
     });
+
+    it('should handle departures far into next hour', function () {
+        expect(countdown.getCountdown("18:39", new Date(1322153707000))).toEqual("43:53.0");
+    });
+
+    it('should handle train that has just departed', function () {
+        expect(countdown.getCountdown("17:41", new Date(1322152860100))).toEqual("-0:0.1");
+    });
+
+    it('should handle train that departed a minute ago', function () {
+        expect(countdown.getCountdown("17:40", new Date(1322152860100))).toEqual("-1:0.1");
+    });
+
+    it('should handle departures almost an hour from now', function () {
+        expect(countdown.getCountdown("18:40", new Date(1322152860100))).toEqual("58:59.9");
+    });
+
+    it('should handle train that departs exactly now', function () {
+        expect(countdown.getCountdown("17:41", new Date(1322152860000))).toEqual("0:0.0");
+    });
 });
