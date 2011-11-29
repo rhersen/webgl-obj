@@ -6,7 +6,8 @@ exports.index = function(req, res) {
         title: 'SL',
         stations: [
             {name: 'Tullinge', id: 9525},
-            {name: 'Karlberg', id: 9510}
+            {name: 'Karlberg', id: 9510},
+            {name: 'Centralen', id: 9001}
         ]
     })
 };

@@ -25,10 +25,9 @@ describe('station', function () {
                 }
             }
         };
-        mock.getJSON = function (url, data, callback) {
-            if (typeof callback === 'function') {
-                called.json = true;
-            }
+        mock.ajax = function (params) {
+            called[params.dataType] = true;
+            called['cache'] = params.cache;
         };
         mock.getCalled = function (x) {
             return called[x];
@@ -37,10 +36,16 @@ describe('station', function () {
         return mock;
     }
 
-    it('should call getJSON', function () {
+    it('should get json', function () {
         var lib = createJqueryMock();
         station.init(lib, '9525');
         expect(lib.getCalled('json')).toBeTruthy();
+    });
+
+    it('should not cache', function () {
+        var lib = createJqueryMock();
+        station.init(lib, '9525');
+        expect(lib.getCalled('cache')).toEqual(false);
     });
 
     it('should have undefined response time before setResult', function () {

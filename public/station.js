@@ -41,8 +41,13 @@ exports.init = function(lib, id, interval) {
     }
 
     function sendRequest(lib, id) {
-        lib.getJSON('/departures/' + id + '.json', '', function (result) {
-            setResult(lib, result, new Date().getTime());
+        lib.ajax({
+            url: '/departures/' + id + '.json',
+            dataType: 'json',
+            cache: false,
+            success: function (result) {
+                setResult(lib, result, new Date().getTime());
+            }
         });
     }
 
