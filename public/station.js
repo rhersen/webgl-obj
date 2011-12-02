@@ -1,7 +1,11 @@
-var responseTime;
+var expiry;
+
+if (typeof require !== 'undefined') {
+    expiry = require('../public/expiry');
+}
 
 function setResult(lib, result, currentTimeMillis) {
-    responseTime = currentTimeMillis;
+    expiry.setResponse(currentTimeMillis);
 
     lib('#title').html(result.station);
     lib('#updated').html(result.updated);
@@ -25,22 +29,13 @@ function setResult(lib, result, currentTimeMillis) {
     }
 }
 
-exports.getResponseTime = function () {
-    return responseTime;
-};
-
-function isExpired(now) {
-    return now - responseTime > 23000;
-}
-
 exports.init = function(lib, id, interval) {
-    sendRequest(lib, id);
-
     if (interval) {
         setInterval(tick, interval);
     }
 
     function sendRequest(lib, id) {
+        expiry.setRequest(new Date().getTime());
         lib.ajax({
             url: '/departures/' + id + '.json',
             dataType: 'json',
@@ -52,11 +47,13 @@ exports.init = function(lib, id, interval) {
     }
 
     function tick() {
-        lib('#expired').html((new Date().getTime() - responseTime));
+        var currentTimeMillis = new Date().getTime();
+        lib('#expired').html((expiry.getTimeSinceRequest(currentTimeMillis) + '·' +
+            expiry.getTimeSinceResponse(currentTimeMillis)));
+
         setCountdowns();
 
-        if (isExpired(new Date().getTime())) {
-            responseTime = undefined;
+        if (expiry.isExpired(new Date().getTime())) {
             sendRequest(lib, id);
         }
 
@@ -71,4 +68,3 @@ exports.init = function(lib, id, interval) {
 };
 
 exports.setResult = setResult;
-exports.isExpired = isExpired;

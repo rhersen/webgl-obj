@@ -8,6 +8,11 @@
     font-size: small;
 }
 
+table {
+    width: 100%;
+    font-size: xx-large;
+}
+
 tr {
     background: #adff2f;
 }

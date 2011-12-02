@@ -26,6 +26,11 @@ exports.departures = function(req, res) {
                     console.log(error.message);
                 } else if (response.statusCode !== 200) {
                     console.log(response.statusCode);
+                    if (req.params.format === 'json') {
+                        res.send({station: response.statusCode, updated: response.statusCode});
+                    } else {
+                        res.render('departures');
+                    }
                 } else {
                     sl.extract(body, 'public/jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
                 }

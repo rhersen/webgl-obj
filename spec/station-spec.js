@@ -1,5 +1,5 @@
 require('jsdom');
-var fs = require('fs');
+var expiry = require('../public/expiry');
 var station = require('../public/station');
 
 describe('station', function () {
@@ -36,42 +36,16 @@ describe('station', function () {
         return mock;
     }
 
-    it('should get json', function () {
-        var lib = createJqueryMock();
-        station.init(lib, '9525');
-        expect(lib.getCalled('json')).toBeTruthy();
-    });
-
-    it('should not cache', function () {
-        var lib = createJqueryMock();
-        station.init(lib, '9525');
-        expect(lib.getCalled('cache')).toEqual(false);
-    });
-
-    it('should have undefined response time before setResult', function () {
-        expect(station.getResponseTime()).toBeUndefined();
-    });
-
-    it('should not be expired before setResult', function () {
-        expect(station.isExpired(1321995701)).toBeFalsy();
-    });
-
     it('should have defined response time after setResult', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture, 1321995701);
-        expect(station.getResponseTime()).toEqual(1321995701);
-    });
-
-    it('should be expired a minute after setResult', function () {
-        var lib = createJqueryMock();
-        station.setResult(lib, fixture, 1320000000);
-        expect(station.isExpired(1320065000)).toBeTruthy();
+        expect(expiry.getResponseTime()).toEqual(1321995701);
     });
 
     it('should not be expired ten seconds after setResult', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture, 1320000000);
-        expect(station.isExpired(1320010000)).toBeFalsy();
+        expect(expiry.isExpired(1320010000)).toBeFalsy();
     });
 
     it('should remove all table rows', function () {
