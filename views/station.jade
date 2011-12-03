@@ -8,14 +8,4 @@ table#departures
     td#time time
     td#destination destination
 script
-    var exports = {};
-    $(document).ready(function() {
-        $.getScript("/countdown.js", function() {
-            $.getScript("/expiry.js", function() {
-                expiry = exports;
-                $.getScript("/station.js", function() {
-                    exports.init($, $('#id').text(), 256);
-                })
-            })
-        })
-    });
+    $(document).ready(main);

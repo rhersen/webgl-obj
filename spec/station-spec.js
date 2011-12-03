@@ -36,18 +36,6 @@ describe('station', function () {
         return mock;
     }
 
-    it('should have defined response time after setResult', function () {
-        var lib = createJqueryMock();
-        station.setResult(lib, fixture, 1321995701);
-        expect(expiry.getResponseTime()).toEqual(1321995701);
-    });
-
-    it('should not be expired ten seconds after setResult', function () {
-        var lib = createJqueryMock();
-        station.setResult(lib, fixture, 1320000000);
-        expect(expiry.isExpired(1320010000)).toBeFalsy();
-    });
-
     it('should remove all table rows', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);

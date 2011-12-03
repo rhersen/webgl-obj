@@ -4,8 +4,10 @@ if (typeof require !== 'undefined') {
     expiry = require('../public/expiry');
 }
 
+var timer = expiry.create();
+
 function setResult(lib, result, currentTimeMillis) {
-    expiry.setResponse(currentTimeMillis);
+    timer.setResponse(currentTimeMillis);
 
     lib('#title').html(result.station);
     lib('#updated').html(result.updated);
@@ -35,7 +37,7 @@ exports.init = function(lib, id, interval) {
     }
 
     function sendRequest(lib, id) {
-        expiry.setRequest(new Date().getTime());
+        timer.setRequest(new Date().getTime());
         lib.ajax({
             url: '/departures/' + id + '.json',
             dataType: 'json',
@@ -48,12 +50,12 @@ exports.init = function(lib, id, interval) {
 
     function tick() {
         var currentTimeMillis = new Date().getTime();
-        lib('#expired').html((expiry.getTimeSinceRequest(currentTimeMillis) + '·' +
-            expiry.getTimeSinceResponse(currentTimeMillis)));
+        lib('#expired').html((timer.getTimeSinceRequest(currentTimeMillis) + '>' +
+            timer.getTimeSinceResponse(currentTimeMillis)));
 
         setCountdowns();
 
-        if (expiry.isExpired(new Date().getTime())) {
+        if (timer.isExpired(new Date().getTime())) {
             sendRequest(lib, id);
         }
 
