@@ -56,4 +56,12 @@ describe('expiry', function () {
         expect(timer.isExpired(1320042000)).toBeTruthy();
     });
 
+    it('should set update time', function () {
+        var timer = expiry.create();
+        timer.setUpdated("01:00");
+        var date = new Date(3600000);
+        date.getTimezoneOffset = function () { return -60 };
+        expect(timer.getTimeSinceUpdate(date)).toEqual(3600000);
+    });
+
 });

@@ -22,11 +22,15 @@ describe('countdown', function () {
     });
 
     it('should handle train that has just departed', function () {
-        expect(countdown.getCountdown("17:41", new Date(1322152860100))).toEqual("-0:0.1");
+        var date = new Date(1322152860100);
+        date.getTimezoneOffset = function () { return -60 };
+        expect(countdown.getCountdown("17:41", date)).toEqual("-0:0.1");
     });
 
     it('should handle train that departed a minute ago', function () {
-        expect(countdown.getCountdown("17:40", new Date(1322152860100))).toEqual("-1:0.1");
+        var date = new Date(1322152860100);
+        date.getTimezoneOffset = function () { return -60 };
+        expect(countdown.getCountdown("17:40", date)).toEqual("-1:0.1");
     });
 
     it('should handle departures almost an hour from now', function () {
@@ -35,5 +39,9 @@ describe('countdown', function () {
 
     it('should handle train that departs exactly now', function () {
         expect(countdown.getCountdown("17:41", new Date(1322152860000))).toEqual("0:0.0");
+    });
+
+    it('should handle hour without leading zero', function () {
+        expect(countdown.millisSinceMidnight("5:00")).toEqual(18000000);
     });
 });

@@ -8,6 +8,7 @@ var timer = expiry.create();
 
 function setResult(lib, result, currentTimeMillis) {
     timer.setResponse(currentTimeMillis);
+    timer.setUpdated(result.updated);
 
     lib('#title').html(result.station);
     lib('#updated').html(result.updated);
@@ -50,7 +51,8 @@ exports.init = function(lib, id, interval) {
 
     function tick() {
         var currentTimeMillis = new Date().getTime();
-        lib('#expired').html((timer.getTimeSinceRequest(currentTimeMillis) + '>' +
+        lib('#expired').html((timer.getTimeSinceUpdate(new Date()) + '>' +
+            timer.getTimeSinceRequest(currentTimeMillis) + '>' +
             timer.getTimeSinceResponse(currentTimeMillis)));
 
         setCountdowns();

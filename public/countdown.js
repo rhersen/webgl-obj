@@ -1,20 +1,26 @@
-function getCountdown(time, nowTime) {
-    var MINUTES = 60000;
-    var HOURS = 60 * MINUTES;
-    var countdown = getDeparture(time) - getNow(nowTime);
+var MINUTES = 60000;
+var HOURS = 60 * MINUTES;
 
-    return countdown < 0 ? '-' + format(-countdown) : format(countdown);
+function getNow(nowTime) {
+    var offset = nowTime.getTimezoneOffset() * MINUTES;
+    return (nowTime.getTime() - offset) % (24 * HOURS);
+}
 
-    function getDeparture(time) {
-        var hour = time.substring(0, 2);
-        var minute = time.substring(3);
+function millisSinceMidnight(time) {
+    var colon = time.indexOf(':');
+    if (colon < 1) {
+        return undefined;
+    } else {
+        var hour = time.substring(0, colon);
+        var minute = time.substring(colon + 1);
         return hour * HOURS + minute * MINUTES;
     }
+}
 
-    function getNow(nowTime) {
-        var offset = nowTime.getTimezoneOffset() * MINUTES;
-        return (nowTime.getTime() - offset) % (24 * HOURS);
-    }
+function getCountdown(time, nowTime) {
+    var countdown = millisSinceMidnight(time) - getNow(nowTime);
+
+    return countdown < 0 ? '-' + format(-countdown) : format(countdown);
 
     function format(millis) {
         var minutes = div(millis, 60000) % 60;
@@ -29,4 +35,6 @@ function getCountdown(time, nowTime) {
     }
 }
 
+exports.getNow = getNow;
+exports.millisSinceMidnight = millisSinceMidnight;
 exports.getCountdown = getCountdown;
