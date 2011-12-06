@@ -50,14 +50,11 @@ exports.init = function(lib, id, interval) {
     }
 
     function tick() {
-        var currentTimeMillis = new Date().getTime();
-        lib('#expired').html((timer.getTimeSinceUpdate(new Date()) + '>' +
-            timer.getTimeSinceRequest(currentTimeMillis) + '>' +
-            timer.getTimeSinceResponse(currentTimeMillis)));
+        lib('#expired').html((timer.getDebugString()));
 
         setCountdowns();
 
-        if (timer.isExpired(new Date().getTime())) {
+        if (timer.isExpired(new Date())) {
             sendRequest(lib, id);
         }
 

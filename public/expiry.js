@@ -9,11 +9,12 @@ exports.create = function () {
     var requestTime;
     var updated;
 
-    function isExpired(now) {
+    function isExpired(date) {
+        var now = date.getTime();
         if (requestTime === undefined) {
             return true;
         }
-        return now - responseTime > 10000 && now - requestTime > 30000;
+        return getTimeSinceUpdate(date) > 60000 && getTimeSinceRequest(now) > 30000 && getTimeSinceResponse(now) > 10000 ;
     }
 
     function setUpdated(u) {
@@ -48,14 +49,19 @@ exports.create = function () {
         return responseTime;
     }
 
+    function getDebugString() {
+        var now = new Date();
+        return getTimeSinceUpdate(now) + '⋋' +
+            getTimeSinceRequest(now.getTime()) + '⋌' +
+            getTimeSinceResponse(now.getTime());
+    }
+
     return {
         getResponseTime: getResponseTime,
         setUpdated: setUpdated,
         setRequest: setRequest,
         setResponse: setResponse,
         isExpired: isExpired,
-        getTimeSinceUpdate: getTimeSinceUpdate,
-        getTimeSinceRequest: getTimeSinceRequest,
-        getTimeSinceResponse: getTimeSinceResponse
+        getDebugString: getDebugString
     }
 };
