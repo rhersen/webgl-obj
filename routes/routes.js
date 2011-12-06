@@ -20,8 +20,16 @@ exports.station = function(req, res) {
 };
 
 exports.departures = function(req, res) {
+    var requestTime = new Date().getTime();
+
+    console.log('GET departures(' + req.params.id + ') @ ' + new Date());
+
     request(createParams(req.params.id),
             function (error, response, body) {
+                var responseTime = new Date().getTime();
+
+                console.log(response.statusCode + ' in ' + (responseTime - requestTime) + ' ms');
+
                 if (error) {
                     console.log(error.message);
                 } else if (response.statusCode !== 200) {
