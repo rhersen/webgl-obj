@@ -10,11 +10,10 @@ exports.create = function () {
     var updated;
 
     function isExpired(date) {
-        var now = date.getTime();
-        if (requestTime === undefined) {
-            return true;
-        }
-        return getTimeSinceUpdate(date) > 60000 && getTimeSinceRequest(now) > 30000 && getTimeSinceResponse(now) > 10000 ;
+        return requestTime === undefined ||
+            getTimeSinceUpdate(date) > 60000 &&
+                getTimeSinceRequest(date.getTime()) > 30000 &&
+                getTimeSinceResponse(date.getTime()) > 10000;
     }
 
     function setUpdated(u) {
@@ -51,8 +50,8 @@ exports.create = function () {
 
     function getDebugString() {
         var now = new Date();
-        return getTimeSinceUpdate(now) + '⋋' +
-            getTimeSinceRequest(now.getTime()) + '⋌' +
+        return getTimeSinceUpdate(now) + '⊂' +
+            getTimeSinceRequest(now.getTime()) + '⊃' +
             getTimeSinceResponse(now.getTime());
     }
 

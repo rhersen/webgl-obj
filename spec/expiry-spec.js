@@ -31,6 +31,7 @@ describe('expiry', function () {
         var timer = expiry.create();
         timer.setRequest(1320000000);
         timer.setResponse(1320040000);
+        timer.setUpdated("7:39");
         expect(timer.isExpired(new Date(1320045000))).toBeFalsy();
     });
 
@@ -46,6 +47,7 @@ describe('expiry', function () {
         var timer = expiry.create();
         timer.setRequest(1320000000);
         timer.setResponse(1320001900);
+        timer.setUpdated("7:39");
         timer.setRequest(1320002000);
         expect(timer.isExpired(new Date(1320017000))).toBeFalsy();
     });
