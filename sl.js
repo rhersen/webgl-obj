@@ -13,23 +13,41 @@ exports.extract = function (html, script, done, res) {
     function scrape(window) {
         var $ = window.jQuery;
         var div = $('div#ctl00_FormRegion_MainRegion_ctl00_ResultHolder div');
-        var table = $('div#ctl00_FormRegion_MainRegion_ctl00_ShowTrains table.result tr');
+        var table = $('div#ctl00_FormRegion_MainRegion_ctl00_ShowTrains table.result');
+
+        var departures = [
+            createDepartures($(table).first().find('tr')),
+            createDepartures($(table).last().find('tr'))
+        ];
+        
+        var isNorthFirst = isNorthbound(departures[0]);
 
         return {
             station: getMatch(/(.+) \(/, div, 'b:first'),
             updated: getMatch(/Uppdaterat kl ([0-9:]+)/, div, 'div:first'),
-            departures: createDepartures(table)
+            northbound: departures[isNorthFirst ? 0 : 1],
+            southbound: departures[isNorthFirst ? 1 : 0]
         };
+
+        function isNorthbound(departure) {
+            for (var i = 0; i < departure.length; i++) {
+                if (/[BM].[lr]sta/.test(departure[i].destination)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         function getMatch(regExp, parent, selector) {
             var match = regExp.exec(parent.find(selector).text());
             return match ? match[1] : undefined;
         }
 
-        function createDepartures(table) {
+        function createDepartures(rows) {
             var r = [];
-            for (var i = 0; i < table.length; i++) {
-                r.push(createDeparture(table[i]));
+            for (var i = 0; i < rows.length; i++) {
+                r.push(createDeparture(rows[i]));
             }
             return r;
         }

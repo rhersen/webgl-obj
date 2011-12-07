@@ -4,9 +4,10 @@ var station = require('../public/station');
 
 describe('station', function () {
     var fixture = {
-        "station":"Flemingsberg","updated":"21:32","departures":[
-            {"delayed":false,"time":"21:45","destination":"Östertälje"},
+        "station":"Flemingsberg","updated":"21:32","northbound":[
             {"delayed":false,"time":"22:29","destination":"Märsta"}
+        ], "southbound":[
+            {"delayed":false,"time":"21:45","destination":"Östertälje"}
         ]};
 
     function createJqueryMock() {
@@ -57,12 +58,12 @@ describe('station', function () {
     it('should set time', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);
-        expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('22:29');
+        expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('21:45');
     });
 
     it('should set time', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);
-        expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Märsta');
+        expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
     });
 });

@@ -14,8 +14,12 @@ function setResult(lib, result, currentTimeMillis) {
     lib('#updated').html(result.updated);
     lib('table#departures tr').remove();
 
-    for (var i = 0; i < result.departures.length; i++) {
-        createTableRow(result.departures[i]);
+    for (var i = 0; i < result.northbound.length; i++) {
+        createTableRow(result.northbound[i]);
+    }
+
+    for (var i = 0; i < result.southbound.length; i++) {
+        createTableRow(result.southbound[i]);
     }
 
     function createTableRow(departure) {

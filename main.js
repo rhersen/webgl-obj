@@ -10,9 +10,16 @@ if (process.argv.length === 2) {
 
 function printResult(result) {
     console.log(result.station + '\t' + result.updated);
-    for (var i = 0; i < result.departures.length; i++) {
-        var obj = result.departures[i];
-        console.log(obj.time + (obj.delayed ? '*' : '') + '\t' + obj.destination);
+    printOneDirection(result.northbound);
+    console.log('━━━━━━━━━━━━━━')
+    printOneDirection(result.southbound);
+
+
+    function printOneDirection(r) {
+        for (var i = 0; i < r.length; i++) {
+            var obj = r[i];
+            console.log(obj.time + (obj.delayed ? '*' : '') + '\t' + obj.destination);
+        }
     }
 }
 
@@ -24,19 +31,19 @@ function getRemote(uri) {
         }
     };
     request(params,
-            function (error, response, body) {
-                if (error) {
-                    console.log(error.message);
-                    return;
-                }
+        function (error, response, body) {
+            if (error) {
+                console.log(error.message);
+                return;
+            }
 
-                if (response.statusCode !== 200) {
-                    console.log(response.statusCode);
-                    return;
-                }
+            if (response.statusCode !== 200) {
+                console.log(response.statusCode);
+                return;
+            }
 
-                sl.extract(body, 'public/jquery-1.6.min.js', printResult);
-            });
+            sl.extract(body, 'public/jquery-1.6.min.js', printResult);
+        });
 }
 
 function getLocal(filename) {
