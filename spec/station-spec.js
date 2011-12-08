@@ -21,6 +21,12 @@ describe('station', function () {
                 },
                 addClass:function () {
                 },
+                show:function () {
+                    called['show'] = selector;
+                },
+                hide:function () {
+                    called['hide'] = selector;
+                },
                 remove:function () {
                     called['remove'] = selector;
                 }
@@ -65,5 +71,25 @@ describe('station', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);
         expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
+    });
+
+    it('should show north on click', function () {
+        var lib = createJqueryMock();
+        station.handleButtonClick(lib, 'north');
+        expect(lib.getCalled('show')).toEqual('table#departures tr.northbound');
+        expect(lib.getCalled('hide')).toEqual('table#departures tr.southbound');
+    });
+
+    it('should show south on click', function () {
+        var lib = createJqueryMock();
+        station.handleButtonClick(lib, 'south');
+        expect(lib.getCalled('show')).toEqual('table#departures tr.southbound');
+        expect(lib.getCalled('hide')).toEqual('table#departures tr.northbound');
+    });
+
+    it('should not hide anything when northsouth is clicked', function () {
+        var lib = createJqueryMock();
+        station.handleButtonClick(lib, 'northsouth');
+        expect(lib.getCalled('hide')).toBeUndefined();
     });
 });
