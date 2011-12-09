@@ -22,6 +22,8 @@ function setResult(lib, result, currentTimeMillis) {
         createTableRow(result.southbound[i], 'southbound');
     }
 
+    handleDirection(lib);
+
     function createTableRow(departure, trClass) {
         lib('table#departures').append('<tr class="' + trClass + '"></tr>');
         if (departure.delayed) {
@@ -36,7 +38,11 @@ function setResult(lib, result, currentTimeMillis) {
     }
 }
 
-function handleButtonClick(lib, c) {
+function handleDirection(lib, c) {
+    if (!c) {
+        c = lib('span#direction').text();
+    }
+
     if (c != 'south') {
         lib('table#departures tr.northbound').show();
     } else {
@@ -48,6 +54,11 @@ function handleButtonClick(lib, c) {
     } else {
         lib('table#departures tr.southbound').hide();
     }
+}
+
+function handleButtonClick(lib, c) {
+    lib('span#direction').text(c);
+    handleDirection(lib, c);
 }
 
 exports.init = function(lib, id, interval) {

@@ -17,6 +17,11 @@ describe('station', function () {
                 html:function (text) {
                     called[selector] = text;
                 },
+                text:function (text) {
+                    if (text) {
+                        called[selector] = text;
+                    }
+                },
                 append:function () {
                 },
                 addClass:function () {
@@ -76,6 +81,7 @@ describe('station', function () {
     it('should show north on click', function () {
         var lib = createJqueryMock();
         station.handleButtonClick(lib, 'north');
+        expect(lib.getCalled('span#direction')).toEqual('north');
         expect(lib.getCalled('show')).toEqual('table#departures tr.northbound');
         expect(lib.getCalled('hide')).toEqual('table#departures tr.southbound');
     });
@@ -83,6 +89,7 @@ describe('station', function () {
     it('should show south on click', function () {
         var lib = createJqueryMock();
         station.handleButtonClick(lib, 'south');
+        expect(lib.getCalled('span#direction')).toEqual('south');
         expect(lib.getCalled('show')).toEqual('table#departures tr.southbound');
         expect(lib.getCalled('hide')).toEqual('table#departures tr.northbound');
     });
@@ -90,6 +97,7 @@ describe('station', function () {
     it('should not hide anything when northsouth is clicked', function () {
         var lib = createJqueryMock();
         station.handleButtonClick(lib, 'northsouth');
+        expect(lib.getCalled('span#direction')).toEqual('northsouth');
         expect(lib.getCalled('hide')).toBeUndefined();
     });
 });
