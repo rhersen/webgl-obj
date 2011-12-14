@@ -72,7 +72,7 @@ describe('station', function () {
         expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('21:45');
     });
 
-    it('should set time', function () {
+    it('should set station name', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);
         expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
@@ -99,5 +99,10 @@ describe('station', function () {
         station.handleButtonClick(lib, 'northsouth');
         expect(lib.getCalled('span#direction')).toEqual('northsouth');
         expect(lib.getCalled('hide')).toBeUndefined();
+    });
+
+    it('should abbreviate', function () {
+        expect(station.abbreviate("Södertälje hamn")).toEqual("Södertälje h");
+        expect(station.abbreviate("Upplands Väsby")).toEqual("Väsby");
     });
 });

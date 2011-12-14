@@ -6,6 +6,18 @@ if (typeof require !== 'undefined') {
 
 var timer = expiry.create();
 
+function abbreviate(name) {
+    if (/hamn$/.test(name)) {
+        return name.substring(0, name.length - 3);
+    }
+
+    if (/^Upplands /.test(name)) {
+        return name.substring(9);
+    }
+
+    return name;
+}
+
 function setResult(lib, result, currentTimeMillis) {
     timer.setResponse(currentTimeMillis);
     timer.setUpdated(result.updated);
@@ -32,7 +44,7 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :first-child').html(departure.time);
         lib('table#departures tr:last').append('<td></td>');
-        lib('table#departures tr:last :last-child').html(departure.destination);
+        lib('table#departures tr:last :last-child').html(abbreviate(departure.destination));
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last td:last').addClass('countdown');
     }
@@ -99,3 +111,4 @@ function handleDirection(lib, c) {
 
 exports.setResult = setResult;
 exports.handleButtonClick = handleButtonClick;
+exports.abbreviate = abbreviate;
