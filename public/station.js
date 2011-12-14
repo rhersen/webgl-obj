@@ -22,8 +22,8 @@ function setResult(lib, result, currentTimeMillis) {
         createTableRow(result.southbound[i], 'southbound');
     }
 
-    handleDirection(lib);
-
+    handleDirection(lib, lib('span#direction').text());
+    
     function createTableRow(departure, trClass) {
         lib('table#departures').append('<tr class="' + trClass + '"></tr>');
         if (departure.delayed) {
@@ -35,24 +35,6 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last :last-child').html(departure.destination);
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last td:last').addClass('countdown');
-    }
-}
-
-function handleDirection(lib, c) {
-    if (!c) {
-        c = lib('span#direction').text();
-    }
-
-    if (c != 'south') {
-        lib('table#departures tr.northbound').show();
-    } else {
-        lib('table#departures tr.northbound').hide();
-    }
-
-    if (c != 'north') {
-        lib('table#departures tr.southbound').show();
-    } else {
-        lib('table#departures tr.southbound').hide();
     }
 }
 
@@ -100,6 +82,20 @@ exports.init = function(lib, id, interval) {
         }
     }
 };
+
+function handleDirection(lib, c) {
+    if (c != 'south') {
+        lib('table#departures tr.northbound').show();
+    } else {
+        lib('table#departures tr.northbound').hide();
+    }
+
+    if (c != 'north') {
+        lib('table#departures tr.southbound').show();
+    } else {
+        lib('table#departures tr.southbound').hide();
+    }
+}
 
 exports.setResult = setResult;
 exports.handleButtonClick = handleButtonClick;

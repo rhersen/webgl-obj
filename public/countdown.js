@@ -26,11 +26,21 @@ function getCountdown(time, nowTime) {
         var minutes = div(millis, 60000) % 60;
         var seconds = div(millis, 1000) % 60;
         var tenths = div(millis, 100) % 10;
-        return minutes + ':' + seconds + '.' + tenths;
+        return minutes + ':' + pad(seconds) + '.' + tenths;
 
         function div(a, b) {
             var mod = a % b;
             return (a - mod) / b;
+        }
+
+        function pad(number) {
+            var r = number.toString();
+
+            if (r.length < 2) {
+                return '0' + r;
+            }
+
+            return r;
         }
     }
 }

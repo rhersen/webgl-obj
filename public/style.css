@@ -1,3 +1,13 @@
+body {
+    color: #dcdccc;
+    background: #3f3f3f;
+}
+
+a {
+    color: #93B3A3;
+    text-decoration: none;
+}
+
 #title {
     font-size: 24pt;
 }
@@ -13,12 +23,9 @@ table {
     font-size: x-large;
 }
 
-tr {
-    background: #adff2f;
-}
-
 tr.delayed {
-    background: #f08080;
+    color: #80D4AA;
+    background: #2F2F2F;
 }
 
 td.countdown {
