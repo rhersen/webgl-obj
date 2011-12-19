@@ -104,5 +104,6 @@ describe('station', function () {
     it('should abbreviate', function () {
         expect(station.abbreviate("Södertälje hamn")).toEqual("Södertälje h");
         expect(station.abbreviate("Upplands Väsby")).toEqual("Väsby");
+        expect(station.abbreviate("Västerhaninge")).toEqual("V‧haninge");
     });
 });

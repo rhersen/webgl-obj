@@ -15,6 +15,10 @@ function abbreviate(name) {
         return name.substring(9);
     }
 
+    if (/^Väster/.test(name)) {
+        return 'V‧' + name.substring(6);
+    }
+
     return name;
 }
 
