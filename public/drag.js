@@ -6,7 +6,6 @@ exports.send = function (event) {
     } else if (event.type === 'mousemove') {
         dragState.move = getClientCoordinates(event);
     } else if (event.type === 'touchstart') {
-        event.preventDefault();
         dragState = createDragState(getTouchEvent(event));
     } else if (event.type === 'touchmove') {
         dragState.move = getClientCoordinates(getTouchEvent(event));
