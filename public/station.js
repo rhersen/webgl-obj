@@ -64,6 +64,11 @@ exports.init = function(lib, id, interval) {
         handleButtonClick(lib, lib(this).attr('class'));
     });
 
+    drag.onUp(function (dragged) {
+        id = 1 * id + (dragged.x < 0 ? -1 : 1);
+        sendRequest(lib, id);
+    });
+
     if (typeof TouchEvent !== 'undefined') {
         lib('#title').bind('touchstart touchmove touchend', handleDragEvents);
     } else {
@@ -81,6 +86,9 @@ exports.init = function(lib, id, interval) {
 
         if (drag.getState()) {
             lib('#title').css('marginLeft', drag.getState().x + 'px');
+            lib('#title').css('background', 'black');
+        } else {
+            lib('#title').css('background', '');
         }
 
         return false;
