@@ -39,7 +39,7 @@ function setResult(lib, result, currentTimeMillis) {
     }
 
     handleDirection(lib, lib('span#direction').text());
-    
+
     function createTableRow(departure, trClass) {
         lib('table#departures').append('<tr class="' + trClass + '"></tr>');
         if (departure.delayed) {
@@ -64,8 +64,26 @@ exports.init = function(lib, id, interval) {
         handleButtonClick(lib, lib(this).attr('class'));
     });
 
+    if (typeof TouchEvent !== 'undefined') {
+        lib('#title').bind('touchstart touchmove touchend', handleDragEvents);
+    } else {
+        lib('#title').bind('mousedown mousemove mouseup', handleDragEvents);
+    }
+
     if (interval) {
         setInterval(tick, interval);
+    }
+
+    function handleDragEvents(event) {
+        drag.send(event);
+
+        lib('#expired').html(drag.getState() ? drag.getState().x + '|' + drag.getState().y : 'inactive');
+
+        if (drag.getState()) {
+            lib('#title').css('marginLeft', drag.getState().x + 'px');
+        }
+
+        return false;
     }
 
     function sendRequest(lib, id) {
@@ -81,8 +99,6 @@ exports.init = function(lib, id, interval) {
     }
 
     function tick() {
-        lib('#expired').html((timer.getDebugString()));
-
         setCountdowns();
 
         if (timer.isExpired(new Date())) {
