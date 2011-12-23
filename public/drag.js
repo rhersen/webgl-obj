@@ -17,13 +17,7 @@ exports.send = function (event) {
     } else if (event.type === 'mouseup') {
         handleUpEvent(getClientCoordinates(event));
     } else if (event.type === 'touchend') {
-        var coord;
-        if (dragState.move) {
-            coord = dragState.move;
-        } else {
-            coord = {x: 0, y: 0};
-        }
-        handleUpEvent(coord);
+        handleUpEvent(dragState.move);
     }
 
     function createDragState(e) {

@@ -40,7 +40,7 @@ describe('drag', function () {
         send('touchend');
     });
 
-    it('state should contain movement since touchstart event', function () {
+    it('should contain movement since touchstart event', function () {
         send('touchstart', 100, 20);
         send('touchmove', 101, 20);
         expect(drag.getState()).toEqual({x: 1, y: 0});
@@ -48,20 +48,32 @@ describe('drag', function () {
     });
 
     it('should invoke up callback on touchend', function () {
-        var invoked = 0;
+        var invoked;
 
         drag.onUp(function (dragged) {
-            if (dragged.x === 2 && dragged.y === 0) {
-                invoked += 1;
-            }
+            invoked = dragged;
         });
 
-        expect(invoked).toEqual(0);
+        expect(invoked).toBeUndefined();
         send('touchstart', 100, 20);
-        expect(invoked).toEqual(0);
         send('touchmove', 102, 20);
+        expect(invoked).toBeUndefined();
         send('touchend');
-        expect(invoked).toEqual(1);
+        expect(invoked).toEqual({ x: 2, y: 0 });
+    });
+
+    it('should return zero movement if touchend follows touchstart', function () {
+        var invoked;
+
+        drag.onUp(function (dragged) {
+            invoked = dragged;
+        });
+
+        expect(invoked).toBeUndefined();
+        send('touchstart', 200, 20);
+        expect(invoked).toBeUndefined();
+        send('touchend');
+        expect(invoked).toEqual({ x: 0, y: 0 });
     });
 
     function down(x, y) {
