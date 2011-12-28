@@ -124,6 +124,8 @@ exports.init = function(lib, id, interval) {
     }
 
     function tick() {
+        lib('#expired').html((timer.getDebugString()));
+
         setCountdowns();
 
         if (timer.isExpired(new Date())) {
