@@ -22,26 +22,49 @@ function abbreviate(name) {
     return name;
 }
 
+function sendRequest(lib, id) {
+    timer.setRequest(new Date().getTime());
+    lib('#predecessor').unbind('mouseup touchend');
+    lib('#successor').unbind('mouseup touchend');
+
+    lib.ajax({
+        url: '/departures/' + id + '.json',
+        dataType: 'json',
+        cache: false,
+        success: function (result) {
+            setResult(lib, result, new Date().getTime());
+        }
+    });
+}
+
 function setResult(lib, result, currentTimeMillis) {
     timer.setResponse(currentTimeMillis);
     timer.setUpdated(result.updated);
 
     lib('#title').html(result.station);
+    lib('#predecessor').html(result.predecessor);
+    lib('#successor').html(result.successor);
     lib('#updated').html(result.updated);
     lib('table#departures tr').remove();
 
-    for (var i = 0; i < result.northbound.length; i++) {
-        createTableRow(result.northbound[i], 'northbound');
-    }
-
-    for (var i = 0; i < result.southbound.length; i++) {
-        createTableRow(result.southbound[i], 'southbound');
-    }
+    createTableRows(result.northbound, 'northbound');
+    createTableRows(result.southbound, 'southbound');
 
     handleDirection(lib, lib('span#direction').text());
 
+    var ev = typeof TouchEvent !== 'undefined' ? 'touchend' : 'mouseup';
+    lib('#predecessor').bind(ev, getRequestSender(result.predecessor));
+    lib('#successor').bind(ev, getRequestSender(result.successor));
+
+    function createTableRows(departures, trClass) {
+        for (var i = 0; i < departures.length; i++) {
+            createTableRow(departures[i], trClass);
+        }
+    }
+
     function createTableRow(departure, trClass) {
-        lib('table#departures').append('<tr class="' + trClass + '"></tr>');
+        lib('table#departures').append('<tr></tr>');
+        lib('table#departures tr:last').addClass(trClass);
         if (departure.delayed) {
             lib('table#departures tr:last').addClass('delayed');
         }
@@ -51,6 +74,12 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last :last-child').html(abbreviate(departure.destination));
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last td:last').addClass('countdown');
+    }
+
+    function getRequestSender(id) {
+        return function () {
+            sendRequest(lib, id);
+        };
     }
 }
 
@@ -92,18 +121,6 @@ exports.init = function(lib, id, interval) {
         }
 
         return false;
-    }
-
-    function sendRequest(lib, id) {
-        timer.setRequest(new Date().getTime());
-        lib.ajax({
-            url: '/departures/' + id + '.json',
-            dataType: 'json',
-            cache: false,
-            success: function (result) {
-                setResult(lib, result, new Date().getTime());
-            }
-        });
     }
 
     function tick() {

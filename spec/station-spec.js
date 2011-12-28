@@ -24,9 +24,13 @@ describe('station', function () {
                 },
                 append:function () {
                 },
-                addClass:function () {
+                addClass:function (c) {
+                    called[selector] = c;
                 },
-                show:function () {
+                bind:function (e) {
+                    called[selector] = e;
+                },
+            show:function () {
                     called['show'] = selector;
                 },
                 hide:function () {
@@ -72,10 +76,35 @@ describe('station', function () {
         expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('21:45');
     });
 
-    it('should set station name', function () {
+    it('should set southbound station name', function () {
         var lib = createJqueryMock();
         station.setResult(lib, fixture);
         expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
+    });
+
+    it('should set northbound station name', function () {
+        var lib = createJqueryMock();
+        station.setResult(lib, { "station":"Flemingsberg", "updated":"21:32",
+            "northbound":[ {"delayed":false,"time":"22:29","destination":"Märsta"} ],
+            "southbound":[]
+        });
+        expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Märsta');
+        expect(lib.getCalled('table#departures tr:last')).toEqual('northbound');
+    });
+
+    it('should bind mouseup', function () {
+        var lib = createJqueryMock();
+        station.setResult(lib, fixture);
+        expect(lib.getCalled('#successor')).toEqual('mouseup');
+        expect(lib.getCalled('#predecessor')).toEqual('mouseup');
+    });
+
+    it('should bind touchend', function () {
+        TouchEvent = 'defined';
+        var lib = createJqueryMock();
+        station.setResult(lib, fixture);
+        expect(lib.getCalled('#successor')).toEqual('touchend');
+        expect(lib.getCalled('#predecessor')).toEqual('touchend');
     });
 
     it('should show north on click', function () {

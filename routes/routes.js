@@ -28,7 +28,11 @@ exports.departures = function(req, res) {
             function (error, response, body) {
                 var responseTime = new Date().getTime();
 
-                console.log(response.statusCode + ' in ' + (responseTime - requestTime) + ' ms');
+                if (response) {
+                    console.log(response.statusCode + ' in ' + (responseTime - requestTime) + ' ms');
+                } else {
+                    console.log('no response');
+                }
 
                 if (error) {
                     console.log(error.message);
@@ -58,6 +62,8 @@ exports.departures = function(req, res) {
     }
 
     function sendJson(result, response) {
+        result.predecessor = req.params.id - 1;
+        result.successor = result.predecessor + 2;
         response.send(result);
     }
 };
