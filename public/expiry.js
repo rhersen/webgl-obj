@@ -16,6 +16,10 @@ exports.create = function () {
                 getTimeSinceResponse(date.getTime()) > 10000;
     }
 
+    function isPending() {
+        return !responseTime || responseTime < requestTime;
+    }
+
     function setUpdated(u) {
         updated = u;
     }
@@ -61,6 +65,7 @@ exports.create = function () {
         setRequest: setRequest,
         setResponse: setResponse,
         isExpired: isExpired,
+        isPending: isPending,
         getDebugString: getDebugString
     }
 };

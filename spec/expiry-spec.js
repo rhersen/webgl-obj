@@ -70,4 +70,22 @@ describe('expiry', function () {
         expect(timer.isExpired(new Date(1320042000))).toBeFalsy();
     });
 
+    it('should be pending before setRequest', function () {
+        var timer = expiry.create();
+        expect(timer.isPending()).toBeTruthy();
+    });
+
+    it('should be pending before setResponse', function () {
+        var timer = expiry.create();
+        timer.setRequest(1320000000);
+        expect(timer.isPending()).toBeTruthy();
+    });
+
+    it('should not be pending after setResponse', function () {
+        var timer = expiry.create();
+        timer.setRequest(1320000000);
+        timer.setResponse(1320001900);
+        expect(timer.isPending()).toBeFalsy();
+    });
+
 });

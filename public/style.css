@@ -3,13 +3,22 @@ body {
     background: #3f3f3f;
 }
 
+body.pending {
+    background: #284F28;
+}
+
 a {
     color: #93B3A3;
     text-decoration: none;
 }
 
-#title {
+#title, #predecessor, #successor {
     font-size: 24pt;
+}
+
+#predecessor, #successor {
+    color: #7F9F7F;
+    font-style: italic;
 }
 
 #id {

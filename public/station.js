@@ -22,8 +22,16 @@ function abbreviate(name) {
     return name;
 }
 
+function updatePending(lib) {
+    if (timer.isPending()) {
+        lib('body').addClass('pending');
+    } else {
+        lib('body').removeClass('pending');
+    }
+}
 function sendRequest(lib, id) {
     timer.setRequest(new Date().getTime());
+    updatePending(lib);
     lib('#predecessor').unbind('mouseup touchend');
     lib('#successor').unbind('mouseup touchend');
 
@@ -40,6 +48,7 @@ function sendRequest(lib, id) {
 function setResult(lib, result, currentTimeMillis) {
     timer.setResponse(currentTimeMillis);
     timer.setUpdated(result.updated);
+    updatePending(lib);
 
     lib('#title').html(result.station);
     lib('#predecessor').html(result.predecessor);
