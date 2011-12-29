@@ -6,6 +6,11 @@ if (typeof require !== 'undefined') {
 
 var timer = expiry.create();
 
+var current = {
+    id: 9525,
+    direction: 'northsouth'
+}
+
 function abbreviate(name) {
     if (/hamn$/.test(name)) {
         return name.substring(0, name.length - 3);
@@ -29,6 +34,7 @@ function updatePending(lib) {
         lib('body').removeClass('pending');
     }
 }
+
 function sendRequest(lib, id) {
     timer.setRequest(new Date().getTime());
     updatePending(lib);
@@ -43,6 +49,8 @@ function sendRequest(lib, id) {
             setResult(lib, result, new Date().getTime());
         }
     });
+
+    current.id = id;
 }
 
 function setResult(lib, result, currentTimeMillis) {
@@ -98,20 +106,11 @@ function handleButtonClick(lib, c) {
 }
 
 exports.init = function(lib, id, interval) {
+    current.id = id;
+
     lib('button').click(function () {
         handleButtonClick(lib, lib(this).attr('class'));
     });
-
-    drag.onUp(function (dragged) {
-        id = 1 * id + (dragged.x < 0 ? -1 : 1);
-        sendRequest(lib, id);
-    });
-
-    if (typeof TouchEvent !== 'undefined') {
-        lib('#title').bind('touchstart touchmove touchend', handleDragEvents);
-    } else {
-        lib('#title').bind('mousedown mousemove mouseup', handleDragEvents);
-    }
 
     if (interval) {
         setInterval(tick, interval);
@@ -138,7 +137,7 @@ exports.init = function(lib, id, interval) {
         setCountdowns();
 
         if (timer.isExpired(new Date())) {
-            sendRequest(lib, id);
+            sendRequest(lib, current.id);
         }
 
         function setCountdowns() {
