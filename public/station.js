@@ -6,11 +6,6 @@ if (typeof require !== 'undefined') {
 
 var timer = expiry.create();
 
-var current = {
-    id: 9525,
-    direction: 'northsouth'
-}
-
 function abbreviate(name) {
     if (/hamn$/.test(name)) {
         return name.substring(0, name.length - 3);
@@ -40,6 +35,9 @@ function sendRequest(lib, id) {
     updatePending(lib);
     lib('#predecessor').unbind('mouseup touchend');
     lib('#successor').unbind('mouseup touchend');
+    lib('#title').html(id);
+    lib('#predecessor').html(' ');
+    lib('#successor').html(' ');
 
     lib.ajax({
         url: '/departures/' + id + '.json',
@@ -50,7 +48,7 @@ function sendRequest(lib, id) {
         }
     });
 
-    current.id = id;
+    lib('span#id').text(id);
 }
 
 function setResult(lib, result, currentTimeMillis) {
@@ -106,7 +104,7 @@ function handleButtonClick(lib, c) {
 }
 
 exports.init = function(lib, id, interval) {
-    current.id = id;
+    lib('span#id').text(id);
 
     lib('button').click(function () {
         handleButtonClick(lib, lib(this).attr('class'));
@@ -137,7 +135,7 @@ exports.init = function(lib, id, interval) {
         setCountdowns();
 
         if (timer.isExpired(new Date())) {
-            sendRequest(lib, current.id);
+            sendRequest(lib, lib('span#id').text());
         }
 
         function setCountdowns() {
