@@ -2,25 +2,10 @@ var expiry;
 
 if (typeof require !== 'undefined') {
     expiry = require('../public/expiry');
+    names = require('../public/names');
 }
 
 var timer = expiry.create();
-
-function abbreviate(name) {
-    if (/hamn$/.test(name)) {
-        return name.substring(0, name.length - 3);
-    }
-
-    if (/^Upplands /.test(name)) {
-        return name.substring(9);
-    }
-
-    if (/^Väster/.test(name)) {
-        return 'V‧' + name.substring(6);
-    }
-
-    return name;
-}
 
 function updatePending(lib) {
     if (timer.isPending()) {
@@ -86,7 +71,7 @@ function setResult(lib, result, currentTimeMillis) {
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last :first-child').html(departure.time);
         lib('table#departures tr:last').append('<td></td>');
-        lib('table#departures tr:last :last-child').html(abbreviate(departure.destination));
+        lib('table#departures tr:last :last-child').html(names.abbreviate(departure.destination));
         lib('table#departures tr:last').append('<td></td>');
         lib('table#departures tr:last td:last').addClass('countdown');
     }
@@ -164,4 +149,3 @@ function handleDirection(lib, c) {
 
 exports.setResult = setResult;
 exports.handleButtonClick = handleButtonClick;
-exports.abbreviate = abbreviate;
