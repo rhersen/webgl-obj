@@ -1,23 +1,27 @@
 var exports = {};
+
 var countdown;
 var expiry;
 var names;
 var drag;
 
 function main() {
-    $.getScript("/countdown.js", function() {
-        countdown = exports;
-        $.getScript("/expiry.js", function() {
-            expiry = exports;
-            $.getScript("/names.js", function() {
-                names = exports;
-                $.getScript("/drag.js", function() {
-                    drag = exports;
-                    $.getScript("/station.js", function() {
-                        exports.init($, $('#id').text(), 256);
-                    })
-                })
-            })
-        })
+    var files = ["/station.js", "/drag.js", "/names.js", "/expiry.js", "/countdown.js"];
+
+    var closures = [
+        function() { drag = exports; },
+        function() { names = exports; },
+        function() { expiry = exports; },
+        function() { countdown = exports; }
+    ];
+
+    $.getScript(files.pop(), function loader() {
+        if (closures.length) {
+            closures.pop()();
+            exports = {};
+            $.getScript(files.pop(), loader);
+        } else {
+            exports.init($, $('#id').text(), 256);
+        }
     })
 }
