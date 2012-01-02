@@ -2,7 +2,7 @@ var target = require('../public/station');
 
 describe('station', function () {
     var fixture = {
-        "station":"Flemingsberg","updated":"21:32","northbound":[
+        "station":"Femlingsberg","updated":"21:32","northbound":[
             {"delayed":false,"time":"22:29","destination":"Märsta"}
         ], "southbound":[
             {"delayed":false,"time":"21:45","destination":"Östertälje"}
@@ -59,7 +59,7 @@ describe('station', function () {
     it('should set station name', function () {
         var lib = createJqueryMock();
         target.setResult(lib, fixture);
-        expect(lib.getCalled('#title')).toEqual('Flemingsberg');
+        expect(lib.getCalled('#title')).toEqual('Femlingsberg');
     });
 
     it('should set update time', function () {

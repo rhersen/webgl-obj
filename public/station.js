@@ -41,7 +41,7 @@ function setResult(lib, result, currentTimeMillis) {
     timer.setUpdated(result.updated);
     updatePending(lib);
 
-    lib('#title').html(result.station);
+    lib('#title').html(names.abbreviate(result.station));
     lib('#predecessor').html(result.predecessor);
     lib('#successor').html(result.successor);
     lib('#updated').html(result.updated);
