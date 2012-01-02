@@ -1,27 +1,27 @@
-var drag = require('../public/drag');
+var target = require('../public/drag');
 
 describe('drag', function () {
     it('should be inactive before receiving events', function () {
-        expect(drag.getState()).toBeFalsy();
+        expect(target.getState()).toBeFalsy();
     });
 
     it('should be active after receiving mousedown event', function () {
         down(100, 20);
-        expect(drag.getState()).toEqual({x: 0, y: 0});
+        expect(target.getState()).toEqual({x: 0, y: 0});
         up(100, 20);
     });
 
     it('state should contain movement since down event', function () {
         down(100, 20);
         move(101, 20);
-        expect(drag.getState()).toEqual({x: 1, y: 0});
+        expect(target.getState()).toEqual({x: 1, y: 0});
         up(100, 20);
     });
 
     it('should invoke up callback', function () {
         var invoked = 0;
 
-        drag.onUp(function (dragged) {
+        target.onUp(function (dragged) {
             if (dragged.x === 2 && dragged.y === 0) {
                 invoked += 1;
             }
@@ -36,21 +36,21 @@ describe('drag', function () {
 
     it('should be active after receiving touchstart event', function () {
         send('touchstart', 100, 20);
-        expect(drag.getState()).toEqual({x: 0, y: 0});
+        expect(target.getState()).toEqual({x: 0, y: 0});
         send('touchend');
     });
 
     it('should contain movement since touchstart event', function () {
         send('touchstart', 100, 20);
         send('touchmove', 101, 20);
-        expect(drag.getState()).toEqual({x: 1, y: 0});
+        expect(target.getState()).toEqual({x: 1, y: 0});
         send('touchend');
     });
 
     it('should invoke up callback on touchend', function () {
         var invoked;
 
-        drag.onUp(function (dragged) {
+        target.onUp(function (dragged) {
             invoked = dragged;
         });
 
@@ -65,7 +65,7 @@ describe('drag', function () {
     it('should return zero movement if touchend follows touchstart', function () {
         var invoked;
 
-        drag.onUp(function (dragged) {
+        target.onUp(function (dragged) {
             invoked = dragged;
         });
 
@@ -77,7 +77,7 @@ describe('drag', function () {
     });
 
     function down(x, y) {
-        drag.send({
+        target.send({
             type: 'mousedown',
             clientX: x,
             clientY: y
@@ -85,7 +85,7 @@ describe('drag', function () {
     }
 
     function move(x, y) {
-        drag.send({
+        target.send({
             type: 'mousemove',
             clientX: x,
             clientY: y
@@ -93,7 +93,7 @@ describe('drag', function () {
     }
 
     function up(x, y) {
-        drag.send({
+        target.send({
             type: 'mouseup',
             clientX: x,
             clientY: y
@@ -102,7 +102,7 @@ describe('drag', function () {
 
     function send(t, x, y) {
         if (x) {
-            drag.send({
+            target.send({
                 type: t,
                 originalEvent: {
                     touches: {
@@ -113,7 +113,7 @@ describe('drag', function () {
                 }
             });
         } else {
-            drag.send({
+            target.send({
                 type: t,
                 originalEvent: {
                     touches: {

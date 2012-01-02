@@ -1,4 +1,4 @@
-function abbreviate(name) {
+exports.abbreviate = function (name) {
     if (/hamn$/.test(name)) {
         return name.substring(0, name.length - 3);
     }
@@ -12,6 +12,4 @@ function abbreviate(name) {
     }
 
     return name;
-}
-
-exports.abbreviate = abbreviate;
+};

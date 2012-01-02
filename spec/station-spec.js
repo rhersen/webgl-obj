@@ -1,6 +1,4 @@
-require('jsdom');
-var expiry = require('../public/expiry');
-var station = require('../public/station');
+var target = require('../public/station');
 
 describe('station', function () {
     var fixture = {
@@ -54,37 +52,37 @@ describe('station', function () {
 
     it('should remove all table rows', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('remove')).toEqual('table#departures tr');
     });
 
     it('should set station name', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('#title')).toEqual('Flemingsberg');
     });
 
     it('should set update time', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('#updated')).toEqual('21:32');
     });
 
     it('should set time', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('21:45');
     });
 
     it('should set southbound station name', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
     });
 
     it('should set northbound station name', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, { "station":"Flemingsberg", "updated":"21:32",
+        target.setResult(lib, { "station":"Flemingsberg", "updated":"21:32",
             "northbound":[ {"delayed":false,"time":"22:29","destination":"Märsta"} ],
             "southbound":[]
         });
@@ -94,7 +92,7 @@ describe('station', function () {
 
     it('should bind mouseup', function () {
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('#successor')).toEqual('mouseup');
         expect(lib.getCalled('#predecessor')).toEqual('mouseup');
     });
@@ -102,14 +100,14 @@ describe('station', function () {
     it('should bind touchend', function () {
         TouchEvent = 'defined';
         var lib = createJqueryMock();
-        station.setResult(lib, fixture);
+        target.setResult(lib, fixture);
         expect(lib.getCalled('#successor')).toEqual('touchend');
         expect(lib.getCalled('#predecessor')).toEqual('touchend');
     });
 
     it('should show north on click', function () {
         var lib = createJqueryMock();
-        station.handleButtonClick(lib, 'north');
+        target.handleButtonClick(lib, 'north');
         expect(lib.getCalled('span#direction')).toEqual('north');
         expect(lib.getCalled('show')).toEqual('table#departures tr.northbound');
         expect(lib.getCalled('hide')).toEqual('table#departures tr.southbound');
@@ -117,7 +115,7 @@ describe('station', function () {
 
     it('should show south on click', function () {
         var lib = createJqueryMock();
-        station.handleButtonClick(lib, 'south');
+        target.handleButtonClick(lib, 'south');
         expect(lib.getCalled('span#direction')).toEqual('south');
         expect(lib.getCalled('show')).toEqual('table#departures tr.southbound');
         expect(lib.getCalled('hide')).toEqual('table#departures tr.northbound');
@@ -125,7 +123,7 @@ describe('station', function () {
 
     it('should not hide anything when northsouth is clicked', function () {
         var lib = createJqueryMock();
-        station.handleButtonClick(lib, 'northsouth');
+        target.handleButtonClick(lib, 'northsouth');
         expect(lib.getCalled('span#direction')).toEqual('northsouth');
         expect(lib.getCalled('hide')).toBeUndefined();
     });

@@ -48,10 +48,6 @@ exports.create = function () {
         responseTime = currentTimeMillis;
     }
 
-    function getResponseTime() {
-        return responseTime;
-    }
-
     function getDebugString() {
         var now = new Date();
         return getTimeSinceUpdate(now) + '⊂' +
@@ -60,7 +56,6 @@ exports.create = function () {
     }
 
     return {
-        getResponseTime: getResponseTime,
         setUpdated: setUpdated,
         setRequest: setRequest,
         setResponse: setResponse,

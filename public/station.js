@@ -88,7 +88,7 @@ function handleButtonClick(lib, c) {
     handleDirection(lib, c);
 }
 
-exports.init = function(lib, id, interval) {
+function init(lib, id, interval) {
     lib('span#id').text(id);
 
     lib('button').click(function () {
@@ -131,7 +131,7 @@ exports.init = function(lib, id, interval) {
             });
         }
     }
-};
+}
 
 function handleDirection(lib, c) {
     if (c != 'south') {
@@ -149,3 +149,4 @@ function handleDirection(lib, c) {
 
 exports.setResult = setResult;
 exports.handleButtonClick = handleButtonClick;
+exports.init = init;
