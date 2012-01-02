@@ -10,6 +10,7 @@ body.pending {
 a {
     color: #93B3A3;
     text-decoration: none;
+    font-size: xx-large;
 }
 
 #title, #predecessor, #successor {
