@@ -1,30 +1,15 @@
 exports.abbreviate = function (name) {
-    name = removePrefix("Upplands ", name);
-    name = removePrefix("Stockholms ", name);
-    name = removePrefix("T-", name);
-    name = replacePrefix("Väster", 'V‧', name);
-    name = replacePrefix("Flemings", 'F‧', name);
-    name = removeSuffix('amn', name);
+    var removals = [/^Upplands /, /^Stockholms /, /^T-/, /amn$/];
+    var replacements = [ [/^Väster/, 'V‧'], [/^Flemings/,'F‧'] ];
 
-    return name;
-
-    function removePrefix(prefix, name) {
-        return replacePrefix(prefix, '', name);
+    return replacements.concat(removals.map(createReplacement)).reduce(replace, name);
+    
+    function createReplacement(removal) {
+        return [removal, ''];
     }
 
-    function replacePrefix(prefix, replacement, name) {
-        var regExp = new RegExp("^" + prefix);
-        if (regExp.test(name)) {
-            return replacement + name.substring(prefix.length);
-        }
-        return name;
+    function replace(name, replacement) {
+        return name.replace(replacement[0], replacement[1]);
     }
 
-    function removeSuffix(suffix, name) {
-        var regExp = new RegExp(suffix + '$');
-        if (regExp.test(name)) {
-            return name.substring(0, name.length - suffix.length);
-        }
-        return name;
-    }
 };
