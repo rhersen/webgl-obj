@@ -47,33 +47,28 @@ function setResult(lib, result, currentTimeMillis) {
     lib('#updated').html(result.updated);
     lib('table#departures tr').remove();
 
-    createTableRows(result.northbound, 'northbound');
-    createTableRows(result.southbound, 'southbound');
-
+    result.northbound.forEach(createTableRow('northbound'));
+    result.southbound.forEach(createTableRow('southbound'));
     handleDirection(lib, lib('span#direction').text());
 
     var ev = typeof TouchEvent !== 'undefined' ? 'touchend' : 'mouseup';
     lib('#predecessor').bind(ev, getRequestSender(result.predecessor));
     lib('#successor').bind(ev, getRequestSender(result.successor));
 
-    function createTableRows(departures, trClass) {
-        for (var i = 0; i < departures.length; i++) {
-            createTableRow(departures[i], trClass);
+    function createTableRow(trClass) {
+        return function (departure) {
+            lib('table#departures').append('<tr></tr>');
+            lib('table#departures tr:last').addClass(trClass);
+            if (departure.delayed) {
+                lib('table#departures tr:last').addClass('delayed');
+            }
+            lib('table#departures tr:last').append('<td></td>');
+            lib('table#departures tr:last :first-child').html(departure.time);
+            lib('table#departures tr:last').append('<td></td>');
+            lib('table#departures tr:last :last-child').html(names.abbreviate(departure.destination));
+            lib('table#departures tr:last').append('<td></td>');
+            lib('table#departures tr:last td:last').addClass('countdown');
         }
-    }
-
-    function createTableRow(departure, trClass) {
-        lib('table#departures').append('<tr></tr>');
-        lib('table#departures tr:last').addClass(trClass);
-        if (departure.delayed) {
-            lib('table#departures tr:last').addClass('delayed');
-        }
-        lib('table#departures tr:last').append('<td></td>');
-        lib('table#departures tr:last :first-child').html(departure.time);
-        lib('table#departures tr:last').append('<td></td>');
-        lib('table#departures tr:last :last-child').html(names.abbreviate(departure.destination));
-        lib('table#departures tr:last').append('<td></td>');
-        lib('table#departures tr:last td:last').addClass('countdown');
     }
 
     function getRequestSender(id) {

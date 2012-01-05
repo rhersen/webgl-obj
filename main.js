@@ -10,16 +10,12 @@ if (process.argv.length === 2) {
 
 function printResult(result) {
     console.log(result.station + '\t' + result.updated);
-    printOneDirection(result.northbound);
+    result.northbound.forEach(printDeparture);
     console.log('━━━━━━━━━━━━━━')
-    printOneDirection(result.southbound);
+    result.southbound.forEach(printDeparture);
 
-
-    function printOneDirection(r) {
-        for (var i = 0; i < r.length; i++) {
-            var obj = r[i];
-            console.log(obj.time + (obj.delayed ? '*' : '') + '\t' + obj.destination);
-        }
+    function printDeparture(d) {
+        console.log(d.time + (d.delayed ? '*' : '') + '\t' + d.destination);
     }
 }
 

@@ -16,11 +16,11 @@ exports.extract = function (html, script, done, res) {
         var table = $('div#ctl00_FormRegion_MainRegion_ctl00_ShowTrains table.result');
 
         var departures = [
-            createDepartures($(table).first().find('tr')),
-            createDepartures($(table).last().find('tr'))
+            $.map($(table).first().find('tr'), createDeparture),
+            $.map($(table).last().find('tr'), createDeparture)
         ];
         
-        var isNorthFirst = isNorthbound(departures[0]);
+        var isNorthFirst = departures[0].some(isNorthbound);
 
         return {
             station: getMatch(/(.+) \(/, div, 'b:first'),
@@ -30,26 +30,12 @@ exports.extract = function (html, script, done, res) {
         };
 
         function isNorthbound(departure) {
-            for (var i = 0; i < departure.length; i++) {
-                if (/[BM].[lr]sta/.test(departure[i].destination)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return /[BM].[lr]sta/.test(departure.destination);
         }
 
         function getMatch(regExp, parent, selector) {
             var match = regExp.exec(parent.find(selector).text());
             return match ? match[1] : undefined;
-        }
-
-        function createDepartures(rows) {
-            var r = [];
-            for (var i = 0; i < rows.length; i++) {
-                r.push(createDeparture(rows[i]));
-            }
-            return r;
         }
 
         function createDeparture(e) {
