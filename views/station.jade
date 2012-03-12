@@ -15,4 +15,5 @@ table#departures
     td#time time
     td#destination destination
 script
-    $(document).ready(main);
+  require.setModuleRoot("/modules");
+  require.run("main");
