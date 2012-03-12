@@ -1,8 +1,4 @@
-var countdown;
-
-if (typeof require !== 'undefined') {
-    countdown = require('../public/countdown');
-}
+var countdown = require('countdown');
 
 exports.create = function () {
     var responseTime;

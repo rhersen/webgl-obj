@@ -1,9 +1,6 @@
-var expiry;
-
-if (typeof require !== 'undefined') {
-    expiry = require('../public/expiry');
-    names = require('../public/names');
-}
+var expiry = require('expiry');
+var names = require('names');
+var countdown = require('countdown');
 
 var timer = expiry.create();
 
@@ -90,6 +87,11 @@ function init(lib, id, interval) {
         handleButtonClick(lib, lib(this).attr('class'));
     });
 
+    lib('button.clear').click(function () {
+        require.clearCache();
+        alert('cache cleared');
+    });
+
     if (interval) {
         setInterval(tick, interval);
     }
@@ -122,7 +124,7 @@ function init(lib, id, interval) {
             var now = new Date();
             lib('table#departures tr').each(function () {
                 var time = $(this).find(':first-child').html();
-                $(this).find(':last-child').html(getCountdown(time, now));
+                $(this).find(':last-child').html(countdown.getCountdown(time, now));
             });
         }
     }

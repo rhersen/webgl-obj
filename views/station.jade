@@ -10,10 +10,11 @@ div
   button.south(type="button") ↓
   button.northsouth(type="button") ⇅
   span#direction northsouth
+  button.clear(type="clear") ⎚
 table#departures
   tr
     td#time time
     td#destination destination
 script
-  require.setModuleRoot("/modules");
+  require.setModuleRoot("http://localhost:3000/modules");
   require.run("main");

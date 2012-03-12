@@ -44,7 +44,7 @@ exports.departures = function(req, res) {
                         res.render('departures');
                     }
                 } else {
-                    sl.extract(body, 'public/jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
+                    sl.extract(body, 'public/modules/jquery-1.6.min.js', req.params.format === 'json' ? sendJson : sendHtml, res);
                 }
             });
 
