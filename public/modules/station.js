@@ -48,7 +48,7 @@ function setResult(lib, result, currentTimeMillis) {
     result.southbound.forEach(createTableRow('southbound'));
     handleDirection(lib, lib('span#direction').text());
 
-    var ev = typeof TouchEvent !== 'undefined' ? 'touchend' : 'mouseup';
+    var ev = typeof TouchEvent === 'undefined' ? 'mouseup' : 'touchend';
     lib('#predecessor').bind(ev, getRequestSender(result.predecessor));
     lib('#successor').bind(ev, getRequestSender(result.successor));
 
@@ -131,16 +131,16 @@ function init(lib, id, interval) {
 }
 
 function handleDirection(lib, c) {
-    if (c != 'south') {
-        lib('table#departures tr.northbound').show();
-    } else {
+    if (c == 'south') {
         lib('table#departures tr.northbound').hide();
+    } else {
+        lib('table#departures tr.northbound').show();
     }
 
-    if (c != 'north') {
-        lib('table#departures tr.southbound').show();
-    } else {
+    if (c == 'north') {
         lib('table#departures tr.southbound').hide();
+    } else {
+        lib('table#departures tr.southbound').show();
     }
 }
 

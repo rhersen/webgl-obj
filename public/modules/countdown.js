@@ -20,7 +20,11 @@ function millisSinceMidnight(time) {
 function getCountdown(time, nowTime) {
     var countdown = millisSinceMidnight(time) - getNow(nowTime);
 
-    return countdown < 0 ? '-' + format(-countdown) : format(countdown);
+    if (countdown < 0) {
+        return '-' + format(-countdown);
+    } else {
+        return format(countdown);
+    }
 
     function format(millis) {
         var minutes = div(millis, 60000) % 60;
