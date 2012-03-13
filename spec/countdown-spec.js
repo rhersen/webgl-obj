@@ -1,4 +1,4 @@
-var target = require('../public/countdown');
+var target = require('../public/modules/countdown');
 
 describe('countdown', function () {
     it('should handle less than one minute', function () {

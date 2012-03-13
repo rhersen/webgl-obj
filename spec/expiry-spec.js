@@ -1,4 +1,4 @@
-var expiry = require('../public/expiry');
+var expiry = require('../public/modules/expiry');
 
 describe('expiry', function () {
 

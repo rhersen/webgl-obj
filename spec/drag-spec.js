@@ -1,4 +1,4 @@
-var target = require('../public/drag');
+var target = require('../public/modules/drag');
 
 describe('drag', function () {
     it('should be inactive before receiving events', function () {

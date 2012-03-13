@@ -1,4 +1,4 @@
-var countdown = require('countdown');
+var countdown = require('./countdown');
 
 exports.create = function () {
     var responseTime;

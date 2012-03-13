@@ -1,4 +1,4 @@
-var target = require('../public/names');
+var target = require('../public/modules/names');
 
 describe('target', function () {
     it('should abbreviate hamn', function () {

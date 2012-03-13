@@ -1,4 +1,4 @@
-var target = require('../public/station');
+var target = require('../public/modules/station');
 
 describe('station', function () {
     var fixture = {

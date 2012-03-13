@@ -1,6 +1,6 @@
-var expiry = require('expiry');
-var names = require('names');
-var countdown = require('countdown');
+var expiry = require('./expiry');
+var names = require('./names');
+var countdown = require('./countdown');
 
 var timer = expiry.create();
 
