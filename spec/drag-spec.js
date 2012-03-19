@@ -48,30 +48,30 @@ describe('drag', function () {
     });
 
     it('should invoke up callback on touchend', function () {
-        var invoked;
+        var invoked = 0;
 
         target.onUp(function (dragged) {
             invoked = dragged;
         });
 
-        expect(invoked).toBeUndefined();
+        expect(invoked).toBeFalsy();
         send('touchstart', 100, 20);
         send('touchmove', 102, 20);
-        expect(invoked).toBeUndefined();
+        expect(invoked).toBeFalsy();
         send('touchend');
         expect(invoked).toEqual({ x: 2, y: 0 });
     });
 
     it('should return zero movement if touchend follows touchstart', function () {
-        var invoked;
+        var invoked = false;
 
         target.onUp(function (dragged) {
             invoked = dragged;
         });
 
-        expect(invoked).toBeUndefined();
+        expect(invoked).toBeFalsy();
         send('touchstart', 200, 20);
-        expect(invoked).toBeUndefined();
+        expect(invoked).toBeFalsy();
         send('touchend');
         expect(invoked).toEqual({ x: 0, y: 0 });
     });

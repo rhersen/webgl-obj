@@ -1,9 +1,11 @@
-var MINUTES = 60000;
-var HOURS = 60 * MINUTES;
+const MINUTES = 60000;
+const MINUTES_PER_HOUR = 60;
+const HOURS = MINUTES_PER_HOUR * MINUTES;
+const HOURS_PER_DAY = 24;
 
 function getNow(nowTime) {
     var offset = nowTime.getTimezoneOffset() * MINUTES;
-    return (nowTime.getTime() - offset) % (24 * HOURS);
+    return (nowTime.getTime() - offset) % (HOURS_PER_DAY * HOURS);
 }
 
 function millisSinceMidnight(time) {
@@ -27,9 +29,9 @@ function getCountdown(time, nowTime) {
     }
 
     function format(millis) {
-        var minutes = div(millis, 60000) % 60;
-        var seconds = div(millis, 1000) % 60;
-        var tenths = div(millis, 100) % 10;
+        var minutes = div(millis, MINUTES) % MINUTES_PER_HOUR;
+        var seconds = div(millis, 1000) % MINUTES_PER_HOUR;
+        var tenths = div(millis, 1000 / 10) % 10;
         return minutes + ':' + pad(seconds) + '.' + tenths;
 
         function div(a, b) {

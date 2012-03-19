@@ -5,11 +5,15 @@ exports.create = function () {
     var requestTime;
     var updated;
 
+
     function isExpired(date) {
-        return requestTime === undefined ||
-            getTimeSinceUpdate(date) > 60000 &&
+        return requestTime === undefined || areTimeLimitsReached(date);
+
+        function areTimeLimitsReached(date) {
+            return getTimeSinceUpdate(date) > 60000 &&
                 getTimeSinceRequest(date.getTime()) > 30000 &&
-                getTimeSinceResponse(date.getTime()) > 10000;
+                getTimeSinceResponse(date.getTime()) > 10000
+        }
     }
 
     function isPending() {

@@ -11,7 +11,7 @@ if (process.argv.length === 2) {
 function printResult(result) {
     console.log(result.station + '\t' + result.updated);
     result.northbound.forEach(printDeparture);
-    console.log('━━━━━━━━━━━━━━')
+    console.log('━━━━━━━━━━━━━━');
     result.southbound.forEach(printDeparture);
 
     function printDeparture(d) {
@@ -44,7 +44,9 @@ function getRemote(uri) {
 
 function getLocal(filename) {
     fs.readFile(filename, function (err, file) {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        }
         sl.extract(file, 'public/modules/jquery-1.6.min.js', printResult);
     });
 }
