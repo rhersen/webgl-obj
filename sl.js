@@ -14,6 +14,10 @@ exports.extract = function (html, script, done, res) {
         var $ = window.jQuery;
         var div = $('div#ctl00_FormRegion_MainRegion_ctl00_ResultHolder div');
         var table = $('div#ctl00_FormRegion_MainRegion_ctl00_ShowTrains table.result');
+        var match = /Uppdaterat kl ([0-9]+):([0-9]+)/.exec(div.find('div:first').text());
+        var updatedHour = match[1];
+        var updatedMinute = match[2];
+        var updated = updatedHour + ':' + updatedMinute;
 
         var departures = [
             $.map($(table).first().find('tr'), createDeparture),
@@ -24,7 +28,7 @@ exports.extract = function (html, script, done, res) {
 
         return {
             station: getMatch(/(.+) \(/, div, 'b:first'),
-            updated: getMatch(/Uppdaterat kl ([0-9:]+)/, div, 'div:first'),
+            updated: updated,
             northbound: departures[isNorthFirst ? 0 : 1],
             southbound: departures[isNorthFirst ? 1 : 0]
         };
@@ -40,9 +44,10 @@ exports.extract = function (html, script, done, res) {
 
         function createDeparture(e) {
             var delayedTime = /Ny tid ca ([0-9:]+)/.exec(getChildText(2, e));
+            var remaining = /([0-9:]+) min/.exec(getChildText(3, e));
             return {
                 delayed: delayedTime !== null,
-                time: delayedTime ? delayedTime[1] : getChildText(0, e),
+                time: remaining ? (updatedHour + ':' + (1 + parseInt(updatedMinute, 10) + parseInt(remaining[1], 10))) : getChildText(0, e),
                 destination: getChildText(1, e)
             };
 
