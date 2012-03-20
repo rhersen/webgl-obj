@@ -12,8 +12,16 @@ describe('jasmine-node', function() {
             expect(result.southbound.length).toEqual(4);
             expect(result.northbound[0].time).toEqual('21:26');
             expect(result.northbound[0].destination).toEqual('Märsta');
+            expect(result.northbound[1].time).toEqual('21:56');
+            expect(result.northbound[1].destination).toEqual('Märsta');
+            expect(result.southbound[0].time).toEqual('21:18');
+            expect(result.southbound[0].destination).toEqual('Östertälje');
             expect(result.southbound[1].time).toEqual('21:33');
             expect(result.southbound[1].destination).toEqual('Södertälje hamn');
+            expect(result.southbound[2].time).toEqual('21:48');
+            expect(result.southbound[2].destination).toEqual('Östertälje');
+            expect(result.southbound[3].time).toEqual('22:03');
+            expect(result.southbound[3].destination).toEqual('Södertälje hamn');
             asyncSpecDone();
         });
         asyncSpecWait();

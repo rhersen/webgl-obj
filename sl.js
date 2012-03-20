@@ -43,13 +43,17 @@ exports.extract = function (html, script, done, res) {
         }
 
         function createDeparture(e) {
-            var delayedTime = /Ny tid ca ([0-9:]+)/.exec(getChildText(2, e));
             var remaining = /([0-9:]+) min/.exec(getChildText(3, e));
+
             return {
-                delayed: delayedTime !== null,
-                time: remaining ? (updatedHour + ':' + (1 + parseInt(updatedMinute, 10) + parseInt(remaining[1], 10))) : getChildText(0, e),
+                delayed: false,
+                time: remaining ? getDepartureTime() : getChildText(3, e),
                 destination: getChildText(1, e)
             };
+
+            function getDepartureTime() {
+                return (updatedHour + ':' + (1 + parseInt(updatedMinute, 10) + parseInt(remaining[1], 10)));
+            }
 
             function getChildText(i, parent) {
                 return $(parent).children(':eq(' + i + ')').text().trim();
