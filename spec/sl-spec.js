@@ -5,34 +5,41 @@ var sl = require('../sl');
 describe('jasmine-node', function() {
     it('should handle times with no delay', function() {
         var file = fs.readFileSync('spec/9525.html', 'utf-8');
-        expect(file.length).toEqual(8005);
         sl.extract(file, '../public/modules/jquery-1.6.min.js', function (result) {
             expect(result.station).toEqual('Tullinge');
-            expect(result.updated).toEqual('21:26');
-            expect(result.northbound.length).toEqual(3);
-            expect(result.southbound.length).toEqual(2);
+            expect(result.updated).toEqual('21:12');
+            expect(result.northbound.length).toEqual(2);
+            expect(result.southbound.length).toEqual(4);
             expect(result.northbound[0].time).toEqual('21:26');
             expect(result.northbound[0].destination).toEqual('Märsta');
-            expect(result.southbound[1].time).toEqual('22:03');
+            expect(result.northbound[1].time).toEqual('21:56');
+            expect(result.northbound[1].destination).toEqual('Märsta');
+            expect(result.southbound[0].time).toEqual('21:18');
+            expect(result.southbound[0].destination).toEqual('Östertälje');
+            expect(result.southbound[1].time).toEqual('21:33');
             expect(result.southbound[1].destination).toEqual('Södertälje hamn');
+            expect(result.southbound[2].time).toEqual('21:48');
+            expect(result.southbound[2].destination).toEqual('Östertälje');
+            expect(result.southbound[3].time).toEqual('22:03');
+            expect(result.southbound[3].destination).toEqual('Södertälje hamn');
             asyncSpecDone();
         });
         asyncSpecWait();
     });
 
-    it('should handle times with one delay', function() {
-        var file = fs.readFileSync('spec/delay.html', 'utf-8');
-        expect(file.length).toEqual(8456);
+    it('should handle trains at the platform', function() {
+        var file = fs.readFileSync('spec/now.html', 'utf-8');
         sl.extract(file, '../public/modules/jquery-1.6.min.js', function (result) {
-            expect(result.station).toEqual('Stuvsta');
-            expect(result.updated).toEqual('17:07');
+            expect(result.station).toEqual('Huddinge');
+            expect(result.updated).toEqual('17:17');
+            expect(result.northbound.length).toEqual(6);
             expect(result.southbound.length).toEqual(6);
-            expect(result.southbound[2].time).toEqual('17:20');
-            expect(result.southbound[2].delayed).toBeFalsy();
-            expect(result.southbound[2].destination).toEqual('Tumba');
-            expect(result.southbound[0].time).toEqual('17:09');
-            expect(result.southbound[0].delayed).toBeTruthy();
-            expect(result.southbound[0].destination).toEqual('Tumba');
+            expect(result.northbound[0].time).toEqual('17:18');
+            expect(result.northbound[0].destination).toEqual('Märsta');
+            expect(result.northbound[1].time).toEqual('17:22');
+            expect(result.northbound[1].destination).toEqual('Kungsängen');
+            expect(result.northbound[4].time).toEqual('18:02');
+            expect(result.northbound[4].destination).toEqual('Märsta');
             asyncSpecDone();
         });
         asyncSpecWait();
@@ -43,15 +50,6 @@ describe('jasmine-node', function() {
         expect(file.length).toEqual(8099);
         sl.extract(file, '../public/modules/jquery-1.6.min.js', function (result) {
             expect(result.northbound[0].destination).toEqual('Bålsta');
-            asyncSpecDone();
-        });
-        asyncSpecWait();
-    });
-
-    it('should handle html without the expected id tags', function() {
-        var file = fs.readFileSync('spec/index.html', 'utf-8');
-        sl.extract(file, '../public/modules/jquery-1.6.min.js', function (result) {
-            expect(result.southbound.length).toEqual(0);
             asyncSpecDone();
         });
         asyncSpecWait();
