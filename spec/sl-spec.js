@@ -27,6 +27,24 @@ describe('jasmine-node', function() {
         asyncSpecWait();
     });
 
+    it('should handle trains at the platform', function() {
+        var file = fs.readFileSync('spec/now.html', 'utf-8');
+        sl.extract(file, '../public/jquery-1.6.min.js', function (result) {
+            expect(result.station).toEqual('Huddinge');
+            expect(result.updated).toEqual('17:17');
+            expect(result.northbound.length).toEqual(6);
+            expect(result.southbound.length).toEqual(6);
+            expect(result.northbound[0].time).toEqual('17:18');
+            expect(result.northbound[0].destination).toEqual('Märsta');
+            expect(result.northbound[1].time).toEqual('17:22');
+            expect(result.northbound[1].destination).toEqual('Kungsängen');
+            expect(result.northbound[4].time).toEqual('18:02');
+            expect(result.northbound[4].destination).toEqual('Märsta');
+            asyncSpecDone();
+        });
+        asyncSpecWait();
+    });
+
     it('should handle Bålsta as northbound', function() {
         var file = fs.readFileSync('spec/balsta.html', 'utf-8');
         expect(file.length).toEqual(8099);

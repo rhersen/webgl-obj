@@ -43,11 +43,17 @@ exports.extract = function (html, script, done, res) {
         }
 
         function createDeparture(e) {
-            var remaining = /([0-9:]+) min/.exec(getChildText(3, e));
+            var minutes = getChildText(3, e);
+
+            if (/Nu/.exec(minutes)) {
+                minutes = '0 min';
+            }
+
+            var remaining = /([0-9:]+) min/.exec(minutes);
 
             return {
                 delayed: false,
-                time: remaining ? getDepartureTime() : getChildText(3, e),
+                time: remaining ? getDepartureTime() : minutes,
                 destination: getChildText(1, e)
             };
 
