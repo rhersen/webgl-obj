@@ -16,5 +16,5 @@ table#departures
     td#time time
     td#destination destination
 script
-  require.setModuleRoot("http://localhost:3000/modules");
+  require.setModuleRoot(window.location.protocol + '//' + window.location.host + '/modules');
   require.run("main");
