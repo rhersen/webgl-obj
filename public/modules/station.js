@@ -13,23 +13,30 @@ function updatePending(lib) {
 }
 
 function setResult(lib, result, currentTimeMillis) {
-    timer.setResponse(currentTimeMillis);
-    timer.setUpdated(result.updated);
+    updateTimer();
     updatePending(lib);
-
-    lib('#title').html(names.abbreviate(result.station));
-    lib('#predecessor').html(result.predecessor);
-    lib('#successor').html(result.successor);
-    lib('#updated').html(result.updated);
-    lib('table#departures tr').remove();
-
-    result.northbound.forEach(createTableRow('northbound'));
-    result.southbound.forEach(createTableRow('southbound'));
+    updateHtml();
+    updateTable();
     handleDirection(lib, lib('span#direction').text());
+    bindEvent(typeof TouchEvent !== 'undefined');
 
-    var ev = typeof TouchEvent === 'undefined' ? 'mouseup' : 'touchend';
-    lib('#predecessor').bind(ev, getRequestSender(result.predecessor));
-    lib('#successor').bind(ev, getRequestSender(result.successor));
+    function updateTimer() {
+        timer.setResponse(currentTimeMillis);
+        timer.setUpdated(result.updated);
+    }
+
+    function updateHtml() {
+        lib('#title').html(names.abbreviate(result.station));
+        lib('#predecessor').html(result.predecessor);
+        lib('#successor').html(result.successor);
+        lib('#updated').html(result.updated);
+    }
+
+    function updateTable() {
+        lib('table#departures tr').remove();
+        result.northbound.forEach(createTableRow('northbound'));
+        result.southbound.forEach(createTableRow('southbound'));
+    }
 
     function createTableRow(trClass) {
         return function (departure) {
@@ -47,10 +54,16 @@ function setResult(lib, result, currentTimeMillis) {
         }
     }
 
-    function getRequestSender(id) {
-        return function () {
-            sendRequest(lib, id);
-        };
+    function bindEvent(isTouch) {
+        var ev = isTouch ? 'touchend' : 'mouseup';
+        lib('#predecessor').bind(ev, getRequestSender(result.predecessor));
+        lib('#successor').bind(ev, getRequestSender(result.successor));
+
+        function getRequestSender(id) {
+            return function () {
+                sendRequest(lib, id);
+            };
+        }
     }
 }
 
