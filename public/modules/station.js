@@ -12,27 +12,6 @@ function updatePending(lib) {
     }
 }
 
-function sendRequest(lib, id) {
-    timer.setRequest(new Date().getTime());
-    updatePending(lib);
-    lib('#predecessor').unbind('mouseup touchend');
-    lib('#successor').unbind('mouseup touchend');
-    lib('#title').html(id);
-    lib('#predecessor').html(' ');
-    lib('#successor').html(' ');
-
-    lib.ajax({
-        url: '/departures/' + id + '.json',
-        dataType: 'json',
-        cache: false,
-        success: function (result) {
-            setResult(lib, result, new Date().getTime());
-        }
-    });
-
-    lib('span#id').text(id);
-}
-
 function setResult(lib, result, currentTimeMillis) {
     timer.setResponse(currentTimeMillis);
     timer.setUpdated(result.updated);
@@ -96,21 +75,6 @@ function init(lib, id, interval) {
         setInterval(tick, interval);
     }
 
-    function handleDragEvents(event) {
-        drag.send(event);
-
-        lib('#expired').html(drag.getState() ? drag.getState().x + '|' + drag.getState().y : 'inactive');
-
-        if (drag.getState()) {
-            lib('#title').css('marginLeft', drag.getState().x + 'px');
-            lib('#title').css('background', 'black');
-        } else {
-            lib('#title').css('background', '');
-        }
-
-        return false;
-    }
-
     function tick() {
         lib('#expired').html((timer.getDebugString()));
 
@@ -144,6 +108,26 @@ function handleDirection(lib, c) {
     }
 }
 
+function sendRequest(lib, id) {
+    timer.setRequest(new Date().getTime());
+    updatePending(lib);
+    lib('#predecessor').unbind('mouseup touchend');
+    lib('#successor').unbind('mouseup touchend');
+    lib('#title').html(id);
+    lib('#predecessor').html(' ');
+    lib('#successor').html(' ');
+
+    lib.ajax({
+        url: '/departures/' + id + '.json',
+        dataType: 'json',
+        cache: false,
+        success: function (result) {
+            setResult(lib, result, new Date().getTime());
+        }
+    });
+
+    lib('span#id').text(id);
+}
+
 exports.setResult = setResult;
-exports.handleButtonClick = handleButtonClick;
-exports.init = init;
+exports.handleButtonClick = handleButtonClick;exports.init = init;

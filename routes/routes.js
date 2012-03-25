@@ -23,6 +23,12 @@ exports.station = function (req, res) {
     })
 };
 
+exports.clearCache = function (req, res) {
+    res.render('clearCache', {
+        title:'Cache cleared'
+    })
+};
+
 exports.departures = function (req, res) {
     var requestTime = new Date().getTime();
 
