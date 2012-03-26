@@ -78,7 +78,7 @@ function init(lib, id, interval) {
 
     lib('button.clear').click(function () {
         require.clearCache();
-        alert('cache cleared');
+        alert('window width is ' + lib(window).width());
     });
 
     if (interval) {
@@ -140,4 +140,5 @@ function sendRequest(lib, id) {
 }
 
 exports.setResult = setResult;
-exports.handleButtonClick = handleButtonClick;exports.init = init;
+exports.handleButtonClick = handleButtonClick;
+exports.init = init;
