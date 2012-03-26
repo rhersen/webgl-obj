@@ -3,9 +3,9 @@ var target = require('../public/modules/station');
 describe('station', function () {
     var fixture = {
         "station":"Femlingsberg","updated":"21:32","northbound":[
-            {"delayed":false,"time":"22:29","destination":"Märsta"}
+            {"time":"22:29","destination":"Märsta"}
         ], "southbound":[
-            {"delayed":false,"time":"21:45","destination":"Östertälje"}
+            {"time":"21:45","destination":"Östertälje"}
         ]};
 
     function createJqueryMock() {
@@ -83,7 +83,7 @@ describe('station', function () {
     it('should set northbound station name', function () {
         var lib = createJqueryMock();
         target.setResult(lib, { "station":"Flemingsberg", "updated":"21:32",
-            "northbound":[ {"delayed":false,"time":"22:29","destination":"Märsta"} ],
+            "northbound":[ {"time":"22:29","destination":"Märsta"} ],
             "southbound":[]
         });
         expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Märsta');

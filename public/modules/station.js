@@ -42,9 +42,6 @@ function setResult(lib, result, currentTimeMillis) {
         return function (departure) {
             lib('table#departures').append('<tr></tr>');
             lib('table#departures tr:last').addClass(trClass);
-            if (departure.delayed) {
-                lib('table#departures tr:last').addClass('delayed');
-            }
             lib('table#departures tr:last').append('<td></td>');
             lib('table#departures tr:last :first-child').html(departure.time);
             lib('table#departures tr:last').append('<td></td>');

@@ -33,11 +33,6 @@ table {
     font-size: x-large;
 }
 
-tr.delayed {
-    color: #80D4AA;
-    background: #2F2F2F;
-}
-
 td.countdown {
     text-align: right;
 }

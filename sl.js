@@ -52,7 +52,6 @@ exports.extract = function (html, script, done, res) {
             var remaining = /([0-9:]+) min/.exec(minutes);
 
             return {
-                delayed: false,
                 time: remaining ? getDepartureTime() : minutes,
                 destination: getChildText(1, e)
             };

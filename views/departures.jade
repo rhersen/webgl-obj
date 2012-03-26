@@ -1,10 +1,14 @@
 h1= station
 p= updated
 table
-  - each departure in departures
+  - each departure in northbound
     tr
       td
-        = departure.delayed
+        = departure.time
+      td
+        = departure.destination
+  - each departure in southbound
+    tr
       td
         = departure.time
       td

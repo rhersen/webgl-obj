@@ -15,7 +15,7 @@ function printResult(result) {
     result.southbound.forEach(printDeparture);
 
     function printDeparture(d) {
-        console.log(d.time + (d.delayed ? '*' : '') + '\t' + d.destination);
+        console.log(d.time + '\t' + d.destination);
     }
 }
 
