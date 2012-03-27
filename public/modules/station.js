@@ -33,21 +33,22 @@ function setResult(lib, result, currentTimeMillis) {
     }
 
     function updateTable() {
-        lib('table#departures tr').remove();
+        lib('table#northbound tr').remove();
+        lib('table#southbound tr').remove();
         result.northbound.forEach(createTableRow('northbound'));
         result.southbound.forEach(createTableRow('southbound'));
     }
 
     function createTableRow(trClass) {
         return function (departure) {
-            lib('table#departures').append('<tr></tr>');
-            lib('table#departures tr:last').addClass(trClass);
-            lib('table#departures tr:last').append('<td></td>');
-            lib('table#departures tr:last :first-child').html(departure.time);
-            lib('table#departures tr:last').append('<td></td>');
-            lib('table#departures tr:last :last-child').html(names.abbreviate(departure.destination));
-            lib('table#departures tr:last').append('<td></td>');
-            lib('table#departures tr:last td:last').addClass('countdown');
+            lib('table#' + trClass).append('<tr></tr>');
+            lib('table#' + trClass + ' tr:last').addClass(trClass);
+            lib('table#' + trClass + ' tr:last').append('<td></td>');
+            lib('table#' + trClass + ' tr:last :first-child').html(departure.time);
+            lib('table#' + trClass + ' tr:last').append('<td></td>');
+            lib('table#' + trClass + ' tr:last :last-child').html(names.abbreviate(departure.destination));
+            lib('table#' + trClass + ' tr:last').append('<td></td>');
+            lib('table#' + trClass + ' tr:last td:last').addClass('countdown');
         }
     }
 
@@ -96,7 +97,7 @@ function init(lib, id, interval) {
 
         function setCountdowns() {
             var now = new Date();
-            lib('table#departures tr').each(function () {
+            lib('table.departures tr').each(function () {
                 var time = $(this).find(':first-child').html();
                 $(this).find(':last-child').html(countdown.getCountdown(time, now));
             });
@@ -106,15 +107,15 @@ function init(lib, id, interval) {
 
 function handleDirection(lib, c) {
     if (c == 'south') {
-        lib('table#departures tr.northbound').hide();
+        lib('table.departures tr.northbound').hide();
     } else {
-        lib('table#departures tr.northbound').show();
+        lib('table.departures tr.northbound').show();
     }
 
     if (c == 'north') {
-        lib('table#departures tr.southbound').hide();
+        lib('table.departures tr.southbound').hide();
     } else {
-        lib('table#departures tr.southbound').show();
+        lib('table.departures tr.southbound').show();
     }
 }
 

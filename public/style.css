@@ -29,8 +29,17 @@ a {
 }
 
 table {
-    width: 100%;
-    font-size: x-large;
+    width: 40%;
+    min-width: 250px;
+    font-size: large;
+}
+
+table#northbound {
+    float: left;
+}
+
+table#southbound {
+    float: right;
 }
 
 td.countdown {

@@ -53,7 +53,7 @@ describe('station', function () {
     it('should remove all table rows', function () {
         var lib = createJqueryMock();
         target.setResult(lib, fixture);
-        expect(lib.getCalled('remove')).toEqual('table#departures tr');
+        expect(lib.getCalled('remove')).toEqual('table#southbound tr');
     });
 
     it('should set station name', function () {
@@ -71,13 +71,13 @@ describe('station', function () {
     it('should set time', function () {
         var lib = createJqueryMock();
         target.setResult(lib, fixture);
-        expect(lib.getCalled('table#departures tr:last :first-child')).toEqual('21:45');
+        expect(lib.getCalled('table#southbound tr:last :first-child')).toEqual('21:45');
     });
 
     it('should set southbound station name', function () {
         var lib = createJqueryMock();
         target.setResult(lib, fixture);
-        expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Östertälje');
+        expect(lib.getCalled('table#southbound tr:last :last-child')).toEqual('Östertälje');
     });
 
     it('should set northbound station name', function () {
@@ -86,8 +86,8 @@ describe('station', function () {
             "northbound":[ {"time":"22:29","destination":"Märsta"} ],
             "southbound":[]
         });
-        expect(lib.getCalled('table#departures tr:last :last-child')).toEqual('Märsta');
-        expect(lib.getCalled('table#departures tr:last')).toEqual('northbound');
+        expect(lib.getCalled('table#northbound tr:last :last-child')).toEqual('Märsta');
+        expect(lib.getCalled('table#northbound tr:last')).toEqual('northbound');
     });
 
     it('should bind mouseup', function () {
@@ -109,16 +109,16 @@ describe('station', function () {
         var lib = createJqueryMock();
         target.handleButtonClick(lib, 'north');
         expect(lib.getCalled('span#direction')).toEqual('north');
-        expect(lib.getCalled('show')).toEqual('table#departures tr.northbound');
-        expect(lib.getCalled('hide')).toEqual('table#departures tr.southbound');
+        expect(lib.getCalled('show')).toEqual('table.departures tr.northbound');
+        expect(lib.getCalled('hide')).toEqual('table.departures tr.southbound');
     });
 
     it('should show south on click', function () {
         var lib = createJqueryMock();
         target.handleButtonClick(lib, 'south');
         expect(lib.getCalled('span#direction')).toEqual('south');
-        expect(lib.getCalled('show')).toEqual('table#departures tr.southbound');
-        expect(lib.getCalled('hide')).toEqual('table#departures tr.northbound');
+        expect(lib.getCalled('show')).toEqual('table.departures tr.southbound');
+        expect(lib.getCalled('hide')).toEqual('table.departures tr.northbound');
     });
 
     it('should not hide anything when northsouth is clicked', function () {
