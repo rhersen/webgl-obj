@@ -2,9 +2,6 @@ const TULLINGE = 9525;
 const KARLBERG = 9510;
 const CENTRALEN = 9001;
 
-var request = require('request');
-
-var sl = require('../sl');
 exports.index = function (req, res) {
     res.render('index', {
         title:'SL',
