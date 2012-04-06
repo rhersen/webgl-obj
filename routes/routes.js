@@ -29,6 +29,12 @@ exports.clearCache = function (req, res) {
     })
 };
 
+exports.webgl = function (req, res) {
+    res.render('webgl', {
+        title:'Cache cleared'
+    })
+};
+
 exports.departures = function (req, res) {
     var requestTime = new Date().getTime();
 

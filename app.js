@@ -25,6 +25,7 @@ app.get('/', routes.index);
 app.get('/departures/:id.:format?', routes.departures);
 app.get('/station/:id', routes.station);
 app.get('/clearCache', routes.clearCache);
+app.get('/webgl', routes.webgl);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
