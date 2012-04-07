@@ -1,23 +1,43 @@
 var shaders = require('./shaders');
 
-function webgl(canvas, textures) {
-    const PERIOD = 20000;
-    const DELAY = 56;
-    const PI2 = 2 * Math.PI;
-    var gl = canvas.getContext("experimental-webgl");
-    var vertexArray = new Array(6);
-    var vertices = new Float32Array(vertexArray);
-    var program = shaders.setupProgram(gl);
+const PERIOD = 20000;
+const PI2 = 2 * Math.PI;
 
-    var vertexBuf = gl.createBuffer();
+var gl;
+var vertexArray = new Array(6);
+var vertices = new Float32Array(vertexArray);
+var vertexBuf;
+
+function draw() {
+    updateVertices(new Date().getTime());
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
+
+    function updateVertices(millis) {
+        var d = PI2 / 3;
+        var angle = (millis % PERIOD) * PI2 / PERIOD;
+
+        for (var i = 0; i < 3; i++) {
+            vertexArray[i * 2] = Math.cos(angle);
+            vertexArray[i * 2 + 1] = Math.sin(angle);
+            angle += d;
+        }
+
+        vertices.set(vertexArray);
+    }
+}
+
+function webgl(canvas, textures) {
+    gl = canvas.getContext("experimental-webgl");
+    var program = shaders.setupProgram(gl);
+    vertexBuf = gl.createBuffer();
+
     var texCoordBuf = createTextureCoordinateBuffer();
     var texImage = textures.initTexture(gl);
-
     bind();
 
     gl.viewport(0, 0, canvas.width, canvas.height);
-
-    setInterval(draw, DELAY);
 
     function createTextureCoordinateBuffer() {
         var texCoordBuf = gl.createBuffer();
@@ -43,26 +63,7 @@ function webgl(canvas, textures) {
         gl.bindTexture(gl.TEXTURE_2D, texImage);
         gl.uniform1i(gl.getUniformLocation(program, "tx"), 0);
     }
-
-    function draw() {
-        updateVertices(new Date().getTime());
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
-        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
-
-        function updateVertices(millis) {
-            var d = PI2 / 3;
-            var angle = (millis % PERIOD) * PI2 / PERIOD;
-
-            for (var i = 0; i < 3; i++) {
-                vertexArray[i * 2] = Math.cos(angle);
-                vertexArray[i * 2 + 1] = Math.sin(angle);
-                angle += d;
-            }
-
-            vertices.set(vertexArray);
-        }
-    }
 }
 
 exports.webgl = webgl;
+exports.draw = draw;
