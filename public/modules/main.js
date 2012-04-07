@@ -1,4 +1,5 @@
-const DELAY = 256;
-
+var textures = require('./textures');
 var imageFactory = require('./imageFactory');
-require("webgl").webgl(document.getElementById("webgl"), imageFactory);
+textures.setImageFactory(imageFactory);
+
+require("webgl").webgl(document.getElementById("webgl"), textures);

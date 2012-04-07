@@ -1,15 +1,17 @@
-function webgl(canvas, imageFactory) {
+var shaders = require('./shaders');
+
+function webgl(canvas, textures) {
     const PERIOD = 20000;
     const DELAY = 56;
     const PI2 = 2 * Math.PI;
     var gl = canvas.getContext("experimental-webgl");
     var vertexArray = new Array(6);
     var vertices = new Float32Array(vertexArray);
-    var program = setupProgram();
+    var program = shaders.setupProgram(gl);
 
     var vertexBuf = gl.createBuffer();
     var texCoordBuf = createTextureCoordinateBuffer();
-    var texImage = initTexture();
+    var texImage = textures.initTexture(gl);
 
     bind();
 
@@ -17,59 +19,11 @@ function webgl(canvas, imageFactory) {
 
     setInterval(draw, DELAY);
 
-    function setupProgram() {
-        var r = createProgram();
-        gl.useProgram(r);
-        return r;
-
-        function createProgram() {
-            var r = gl.createProgram();
-
-            gl.attachShader(r, createShader(gl.VERTEX_SHADER,
-                'attribute vec2 pos; attribute vec2 txc; varying vec2 ftxc;' +
-                    'void main() { gl_Position = vec4(pos, 0, 1.1); ftxc = txc; }'));
-
-            gl.attachShader(r, createShader(gl.FRAGMENT_SHADER,
-            'precision mediump float; uniform vec4 color; uniform sampler2D tx; varying vec2 ftxc;' +
-                'void main() { gl_FragColor = ' +
-                'texture2D(tx, vec2(ftxc.s, ftxc.t));' +
-            ' }'));
-
-            gl.linkProgram(r);
-
-            return r;
-
-            function createShader(type, source) {
-                var r = gl.createShader(type);
-                gl.shaderSource(r, source);
-                gl.compileShader(r);
-                return r;
-            }
-        }
-    }
-
     function createTextureCoordinateBuffer() {
         var texCoordBuf = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuf);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0.5, 1]), gl.STATIC_DRAW);
         return texCoordBuf;
-    }
-
-    function initTexture() {
-        var r = gl.createTexture();
-        r.image = imageFactory.createImage();
-        r.image.onload = setTextureParameters;
-        r.image.src = "warning.png";
-
-        return r;
-
-        function setTextureParameters() {
-            gl.bindTexture(gl.TEXTURE_2D, r);
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, r.image);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        }
     }
 
     function bind() {

@@ -1,4 +1,5 @@
 var target = require('../public/modules/webgl');
+var textures = require('../public/modules/textures');
 
 var nop = function () { };
 var obj = function () { return {}; };
@@ -29,16 +30,18 @@ var glMock = {
 
 var canvasMock = {};
 
-canvasMock.getContext = function (name) {
+canvasMock.getContext = function () {
     return glMock;
-}
+};
 
 var imageFactoryMock = {};
 
 imageFactoryMock.createImage = obj;
 
+textures.setImageFactory(imageFactoryMock);
+
 describe('webgl', function () {
     it('should not return anything', function () {
-        expect(target.webgl(canvasMock, imageFactoryMock)).not.toBeDefined();
+        expect(target.webgl(canvasMock, textures)).not.toBeDefined();
     });
 });
