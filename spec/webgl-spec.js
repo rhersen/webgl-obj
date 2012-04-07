@@ -42,6 +42,6 @@ textures.setImageFactory(imageFactoryMock);
 
 describe('webgl', function () {
     it('should not return anything', function () {
-        expect(target.webgl(canvasMock, textures)).not.toBeDefined();
+        expect(target.init(canvasMock, textures)).not.toBeDefined();
     });
 });

@@ -28,7 +28,7 @@ function draw() {
     }
 }
 
-function webgl(canvas, textures) {
+function init(canvas, textures) {
     gl = canvas.getContext("experimental-webgl");
     var program = shaders.setupProgram(gl);
     vertexBuf = gl.createBuffer();
@@ -40,10 +40,10 @@ function webgl(canvas, textures) {
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     function createTextureCoordinateBuffer() {
-        var texCoordBuf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuf);
+        var r = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, r);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0.5, 1]), gl.STATIC_DRAW);
-        return texCoordBuf;
+        return r;
     }
 
     function bind() {
@@ -65,5 +65,5 @@ function webgl(canvas, textures) {
     }
 }
 
-exports.webgl = webgl;
+exports.init = init;
 exports.draw = draw;
