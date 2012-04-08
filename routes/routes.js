@@ -13,13 +13,6 @@ exports.index = function (req, res) {
     })
 };
 
-exports.station = function (req, res) {
-    res.render('station', {
-        title:'Station',
-        id:req.params.id
-    })
-};
-
 exports.clearCache = function (req, res) {
     res.render('clearCache', {
         title:'Cache cleared'
@@ -28,7 +21,7 @@ exports.clearCache = function (req, res) {
 
 exports.webgl = function (req, res) {
     res.render('webgl', {
-        title:'Cache cleared'
+        title:'WebGL'
     })
 };
 
