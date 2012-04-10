@@ -4,7 +4,7 @@ const PERIOD = 20000;
 const PI2 = 2 * Math.PI;
 
 var gl;
-var vertexArray = new Array(6);
+var vertexArray = new Array(8);
 var vertices = new Float32Array(vertexArray);
 var vertexBuf;
 
@@ -15,12 +15,13 @@ function draw() {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
 
     function updateVertices(millis) {
-        var d = PI2 / 3;
+        var d = PI2 / 4;
         var angle = (millis % PERIOD) * PI2 / PERIOD;
 
-        for (var i = 0; i < 3; i++) {
-            vertexArray[i * 2] = Math.cos(angle);
-            vertexArray[i * 2 + 1] = Math.sin(angle);
+        for (var i = 0; i < 4; i++) {
+            var mapped = i < 2 ? i : 5 - i;
+            vertexArray[mapped * 2] = Math.cos(angle);
+            vertexArray[mapped * 2 + 1] = Math.sin(angle);
             angle += d;
         }
 
@@ -28,8 +29,8 @@ function draw() {
     }
 }
 
-function init(canvas, textures) {
-    gl = canvas.getContext("experimental-webgl");
+function init(context, textures) {
+    gl = context;
     var program = shaders.setupProgram(gl);
     vertexBuf = gl.createBuffer();
 
@@ -37,12 +38,10 @@ function init(canvas, textures) {
     var texImage = textures.initTexture(gl);
     bind();
 
-    gl.viewport(0, 0, canvas.width, canvas.height);
-
     function createTextureCoordinateBuffer() {
         var r = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, r);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0.5, 1]), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]), gl.STATIC_DRAW);
         return r;
     }
 
