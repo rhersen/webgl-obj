@@ -11,13 +11,13 @@ function resizeHandler(canvas) {
         const margin = 16;
         canvas.height = window.innerHeight - margin;
         canvas.width = window.innerHeight - margin;
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        webgl.setViewport(canvas.width, canvas.height);
     }
 }
 
+webgl.init(gl, textures);
 resizeHandler(canvas)();
 window.onresize = resizeHandler(canvas);
-webgl.init(gl, textures);
 
 const DELAY = 56;
 setInterval(webgl.draw, DELAY);

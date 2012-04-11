@@ -33,7 +33,10 @@ var glMock = {
     activeTexture:nop,
     bindTexture:nop,
     uniform1i:nop,
-    viewport:nop,
+    viewport:function (x, y, w, h) {
+        called.width = w;
+        called.height = h;
+    },
     drawArrays:function (mode, first, count) {
         called.drawArrays = count;
     },
@@ -63,5 +66,11 @@ describe('webgl', function () {
     it('should draw a quad', function () {
         target.draw();
         expect(called.drawArrays).toEqual(4);
+    });
+
+    it('should set viewport', function () {
+        target.setViewport(333, 444);
+        expect(called.width).toEqual(333);
+        expect(called.height).toEqual(444);
     });
 });

@@ -64,5 +64,10 @@ function init(context, textures) {
     }
 }
 
+function setViewport(w, h) {
+    gl.viewport(0, 0, w, h);
+}
+
 exports.init = init;
 exports.draw = draw;
+exports.setViewport = setViewport;
