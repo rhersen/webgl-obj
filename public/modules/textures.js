@@ -8,7 +8,7 @@ function initTexture(gl) {
     var r = gl.createTexture();
     r.image = imageFactory.createImage();
     r.image.onload = setTextureParameters;
-    r.image.src = "512.png";
+    r.image.src = "2048.png";
 
     return r;
 

@@ -24,7 +24,9 @@ var glMock = {
     clearColor:obj,
     createTexture:obj,
     bindBuffer:nop,
-    bufferData:nop,
+    bufferData:function (buffer, data) {
+        called.bufferData = data;
+    },
     getUniformLocation:nop,
     uniform4fv:nop,
     getAttribLocation:nop,
@@ -66,6 +68,26 @@ describe('webgl', function () {
     it('should draw a quad', function () {
         target.draw();
         expect(called.drawArrays).toEqual(4);
+    });
+
+    it('should set vertices', function () {
+        target.draw();
+        expect(called.bufferData[0]).toEqual(-1);
+        expect(called.bufferData[1]).toEqual(-1);
+        expect(called.bufferData[2]).toEqual(0);
+        expect(called.bufferData[3]).toEqual(1);
+        expect(called.bufferData[4]).toEqual(-1);
+        expect(called.bufferData[5]).toEqual(1);
+        expect(called.bufferData[6]).toEqual(0);
+        expect(called.bufferData[7]).toEqual(1);
+        expect(called.bufferData[8]).toEqual(1);
+        expect(called.bufferData[9]).toEqual(-1);
+        expect(called.bufferData[10]).toEqual(0);
+        expect(called.bufferData[11]).toEqual(1);
+        expect(called.bufferData[12]).toEqual(1);
+        expect(called.bufferData[13]).toEqual(1);
+        expect(called.bufferData[14]).toEqual(0);
+        expect(called.bufferData[15]).toEqual(1);
     });
 
     it('should set viewport', function () {

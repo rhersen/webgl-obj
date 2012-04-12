@@ -1,14 +1,15 @@
 var textures = require('./textures');
 var imageFactory = require('./imageFactory');
-textures.setImageFactory(imageFactory);
 var webgl = require("webgl");
 
+const margin = 16;
+
+textures.setImageFactory(imageFactory);
 var canvas = document.getElementById("webgl");
 var gl = canvas.getContext("experimental-webgl");
 
 function resizeHandler(canvas) {
     return function () {
-        const margin = 16;
         canvas.height = window.innerHeight - margin;
         canvas.width = window.innerHeight - margin;
         webgl.setViewport(canvas.width, canvas.height);
