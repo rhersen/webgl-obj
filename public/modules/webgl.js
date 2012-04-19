@@ -32,62 +32,28 @@ function draw() {
     }
 }
 
-function coordinates() {
-    var r = new Float32Array(8);
-    for (var i = 0; i < 4; ++i) {
-        setCoordinateValues(i);
-    }
-
-    return r;
-
-    function setCoordinateValues(i) {
-        for (var j = 0; j < 2; j++) {
-            r[2 * i + j] = getCoordinateValue(i, j);
-        }
-
-        function getCoordinateValue(i, j) {
-            if (j === 0) {
-                return i >= 2;
-            } else {
-                return i % 2;
-            }
-        }
-    }
-}
-function init(context, textures) {
+function init(context) {
     gl = context;
     var program = shaders.setupProgram(gl);
     vertexBuf = gl.createBuffer();
 
-    var texCoordBuf = createTextureCoordinateBuffer();
-    var texImage = textures.initTexture(gl);
-    bind();
-
-    function createTextureCoordinateBuffer() {
-        var r = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, r);
-        gl.bufferData(gl.ARRAY_BUFFER, coordinates(), gl.STATIC_DRAW);
-        return r;
-    }
-
-    function bind() {
-        var loc;
-        gl.uniform4fv(gl.getUniformLocation(program, "color"), [0, 0, 1, 1]);
-
-        loc = gl.getAttribLocation(program, "pos");
-        gl.enableVertexAttribArray(loc);
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
-        gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
-
-        loc = gl.getAttribLocation(program, "txc");
-        gl.enableVertexAttribArray(loc);
-        gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuf);
-        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texImage);
-        gl.uniform1i(gl.getUniformLocation(program, "tx"), 0);
-    }
+    gl.uniform4fv(gl.getUniformLocation(program, "color"), [0, 0, 1, 1]);
+    gl.uniformMatrix4fv(gl.getUniformLocation(program, "perspective"), false, [
+        2, 0, 0, 0,
+        0, 2, 0, 0,
+        0, 0, -1, -1,
+        0, 0, -1, 0
+    ]);
+    gl.uniformMatrix4fv(gl.getUniformLocation(program, "view"), false, [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, -4, 1
+    ]);
+    var loc = gl.getAttribLocation(program, "pos");
+    gl.enableVertexAttribArray(loc);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
+    gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
 }
 
 function setViewport(w, h) {

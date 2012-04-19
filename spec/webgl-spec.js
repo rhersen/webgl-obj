@@ -27,8 +27,13 @@ var glMock = {
     bufferData:function (buffer, data) {
         called.bufferData = data;
     },
-    getUniformLocation:nop,
+    getUniformLocation: function (location, name) {
+        return name;
+    },
     uniform4fv:nop,
+    uniformMatrix4fv: function (location, transpose, value) {
+        called.uniformMatrix4fv[location] = value;
+    },
     getAttribLocation:nop,
     enableVertexAttribArray:nop,
     vertexAttribPointer:nop,
@@ -53,15 +58,15 @@ textures.setImageFactory(imageFactoryMock);
 
 describe('webgl', function () {
     beforeEach(function () {
-        called = {};
+        called = {uniformMatrix4fv: {}};
     });
 
     it('should not return anything', function () {
-        expect(target.init(glMock, textures)).not.toBeDefined();
+        expect(target.init(glMock)).not.toBeDefined();
     });
 
     it('should use program', function () {
-        target.init(glMock, textures);
+        target.init(glMock);
         expect(called.useProgram).toBeTruthy();
     });
 
@@ -70,24 +75,14 @@ describe('webgl', function () {
         expect(called.drawArrays).toEqual(4);
     });
 
-    it('should set vertices', function () {
-        target.draw();
-        expect(called.bufferData[0]).toEqual(-1);
-        expect(called.bufferData[1]).toEqual(-1);
-        expect(called.bufferData[2]).toEqual(0);
-        expect(called.bufferData[3]).toEqual(1);
-        expect(called.bufferData[4]).toEqual(-1);
-        expect(called.bufferData[5]).toEqual(1);
-        expect(called.bufferData[6]).toEqual(0);
-        expect(called.bufferData[7]).toEqual(1);
-        expect(called.bufferData[8]).toEqual(1);
-        expect(called.bufferData[9]).toEqual(-1);
-        expect(called.bufferData[10]).toEqual(0);
-        expect(called.bufferData[11]).toEqual(1);
-        expect(called.bufferData[12]).toEqual(1);
-        expect(called.bufferData[13]).toEqual(1);
-        expect(called.bufferData[14]).toEqual(0);
-        expect(called.bufferData[15]).toEqual(1);
+    it('should set perspective matrix', function () {
+        target.init(glMock);
+        expect(called.uniformMatrix4fv['perspective'].length).toEqual(16);
+    });
+
+    it('should set view matrix', function () {
+        target.init(glMock);
+        expect(called.uniformMatrix4fv['view'].length).toEqual(16);
     });
 
     it('should set viewport', function () {

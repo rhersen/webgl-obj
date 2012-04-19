@@ -16,7 +16,7 @@ function resizeHandler(canvas) {
     }
 }
 
-webgl.init(gl, textures);
+webgl.init(gl);
 resizeHandler(canvas)();
 window.onresize = resizeHandler(canvas);
 

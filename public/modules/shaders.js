@@ -7,16 +7,19 @@ function setupProgram(gl) {
         var r = gl.createProgram();
 
         gl.attachShader(r, createShader(gl.VERTEX_SHADER,
-            'attribute vec4 pos; attribute vec2 txc; varying vec2 ftxc;' +
-                'void main() { gl_Position = pos; ftxc = txc; }'));
+            'uniform mat4 perspective;' +
+                'uniform mat4 view;' +
+                'attribute vec4 pos; attribute vec2 txc;' +
+                'varying vec2 ftxc;' +
+                'void main() { gl_Position = perspective * view * pos; ftxc = txc; }'));
 
         gl.attachShader(r, createShader(gl.FRAGMENT_SHADER,
             'precision mediump float;' +
-                'uniform vec4 color; uniform sampler2D tx;' +
-                'varying vec2 ftxc;' +
-                'void main() { gl_FragColor = ' +
-                'texture2D(tx, vec2(ftxc.s, ftxc.t));' +
-                ' }'));
+                'uniform vec4 color;' +
+                'void main() {' +
+                'gl_FragColor = ' +
+                'vec4(1, 0, 0, 1);' +
+                '}'));
 
         gl.linkProgram(r);
 
