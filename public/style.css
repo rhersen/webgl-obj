@@ -1,3 +1,13 @@
+#stretch {
+    height: 100%;
+    width: 100%;
+}
+
+#stretch canvas {
+    width: 500px;
+    height: 500px;
+}
+
 body {
     color: #dcdccc;
     background: #3f3f3f;

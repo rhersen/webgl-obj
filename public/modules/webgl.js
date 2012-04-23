@@ -1,43 +1,38 @@
 var shaders = require('./shaders');
 
 var gl;
-var vertices = new Float32Array(4 * 4);
-var vertexBuf;
+var yRotation;
 
 function draw() {
-    updateVertices();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 4);
+    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
+}
 
-    function updateVertices() {
-        for (var i = 0; i < 4; ++i) {
-            setVertexValues(i);
-        }
-
-        function setVertexValues(i) {
-            for (var j = 0; j < 4; j++) {
-                vertices[4 * i + j] = getVertexValue(i, j);
-            }
-
-            function getVertexValue(i, j) {
-                switch (j) {
-                    case 0: return i < 2 ? -1 : 1;
-                    case 1: return i % 2 ? 1 : -1;
-                    case 2: return 0;
-                    default: return 1;
-                }
-            }
-        }
-    }
+function mousemove(x) {
+    var angle = -x * 2 * Math.PI / 500;
+    var c = Math.cos(angle);
+    var s = Math.sin(angle);
+    gl.uniformMatrix4fv(yRotation, false, [
+        c, 0, s, 0,
+        0, 1, 0, 0,
+        -s, 0, c, 0,
+        0, 0, 0, 1
+    ]);
 }
 
 function init(context) {
     gl = context;
     var program = shaders.setupProgram(gl);
-    vertexBuf = gl.createBuffer();
+    setupMatrices(program);
+    setupVertices(program);
+    setupElements();
+}
 
-    gl.uniform4fv(gl.getUniformLocation(program, "color"), [0, 0, 1, 1]);
+exports.draw = draw;
+exports.mousemove = mousemove;
+exports.init = init;
+
+function setupMatrices(program) {
+    yRotation = gl.getUniformLocation(program, "yRotation");
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "perspective"), false, [
         2, 0, 0, 0,
         0, 2, 0, 0,
@@ -50,16 +45,49 @@ function init(context) {
         0, 0, 1, 0,
         0, 0, -4, 1
     ]);
+    gl.uniformMatrix4fv(yRotation, false, [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    ]);
+}
+
+function setupVertices(program) {
     var loc = gl.getAttribLocation(program, "pos");
     gl.enableVertexAttribArray(loc);
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuf);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
+    gl.bufferData(gl.ARRAY_BUFFER, getVertices(), gl.DYNAMIC_DRAW);
 }
 
-function setViewport(w, h) {
-    gl.viewport(0, 0, w, h);
+function setupElements() {
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2]), gl.STATIC_DRAW);
 }
 
-exports.init = init;
-exports.draw = draw;
-exports.setViewport = setViewport;
+function getVertices() {
+    var vertices = new Float32Array(4 * 4);
+
+    for (var i = 0; i < 3; ++i) {
+        setVertexValues(i);
+    }
+
+    return vertices;
+
+    function setVertexValues(i) {
+        for (var j = 0; j < 4; j++) {
+            vertices[4 * i + j] = getVertexValue(i, j);
+        }
+
+        function getVertexValue(i, j) {
+            var angle = Math.PI * i / 1.5;
+            switch (j) {
+                case 0: return Math.cos(angle);
+                case 1: return Math.sin(angle);
+                case 2: return 0;
+                default: return 1;
+            }
+        }
+    }
+}

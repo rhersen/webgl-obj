@@ -9,9 +9,9 @@ function setupProgram(gl) {
         gl.attachShader(r, createShader(gl.VERTEX_SHADER,
             'uniform mat4 perspective;' +
                 'uniform mat4 view;' +
-                'attribute vec4 pos; attribute vec2 txc;' +
-                'varying vec2 ftxc;' +
-                'void main() { gl_Position = perspective * view * pos; ftxc = txc; }'));
+                'uniform mat4 yRotation;' +
+                'attribute vec4 pos;' +
+                'void main() { gl_Position = perspective * view * yRotation * pos; }'));
 
         gl.attachShader(r, createShader(gl.FRAGMENT_SHADER,
             'precision mediump float;' +

@@ -44,8 +44,8 @@ var glMock = {
         called.width = w;
         called.height = h;
     },
-    drawArrays:function (mode, first, count) {
-        called.drawArrays = count;
+    drawElements:function (mode, count) {
+        called.drawElements = count;
     },
     attachShader:nop
 };
@@ -65,14 +65,18 @@ describe('webgl', function () {
         expect(target.init(glMock)).not.toBeDefined();
     });
 
+    it('should not return anything', function () {
+        expect(typeof target.mousemove).toEqual('function');
+    });
+
     it('should use program', function () {
         target.init(glMock);
         expect(called.useProgram).toBeTruthy();
     });
 
-    it('should draw a quad', function () {
+    it('should draw a triangle', function () {
         target.draw();
-        expect(called.drawArrays).toEqual(4);
+        expect(called.drawElements).toEqual(3);
     });
 
     it('should set perspective matrix', function () {
@@ -85,9 +89,18 @@ describe('webgl', function () {
         expect(called.uniformMatrix4fv['view'].length).toEqual(16);
     });
 
-    it('should set viewport', function () {
-        target.setViewport(333, 444);
-        expect(called.width).toEqual(333);
-        expect(called.height).toEqual(444);
+    it('should set yRotation matrix', function () {
+        target.init(glMock);
+        expect(called.uniformMatrix4fv['yRotation'].length).toEqual(16);
+    });
+
+    it('yRotation matrix should be identity when mouse is in the middle', function () {
+        target.mousemove(250, 250);
+        expect(Math.abs(called.uniformMatrix4fv['yRotation'][2])).toBeLessThan(1e-9);
+    });
+
+    it('should rotate when mouse is not in the middle', function () {
+        target.mousemove(200, 200);
+        expect(called.uniformMatrix4fv['yRotation'][2]).toBeLessThan(0);
     });
 });
