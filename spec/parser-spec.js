@@ -1,4 +1,4 @@
-var target = require('../public/modules/textures');
+var target = require('../public/modules/parser');
 
 var obj = function () { return {}; };
 

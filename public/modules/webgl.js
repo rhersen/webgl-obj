@@ -63,31 +63,19 @@ function setupVertices(program) {
 
 function setupElements() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2]), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, getFaces(), gl.STATIC_DRAW);
+}
+function getFaces() {
+    return new Uint16Array([0, 2, 1, 0, 3, 2]);
 }
 
 function getVertices() {
     var vertices = new Float32Array(4 * 4);
-
-    for (var i = 0; i < 3; ++i) {
-        setVertexValues(i);
-    }
+    vertices.set([0.0000000e+0, 1.08866211, 0.0000000e+0, 1,
+         0.0000000e+0, -0.54433105, 1.15470054, 1,
+         -1.00000000, -0.54433105, -0.57735027, 1,
+         1.00000000, -0.54433105, -0.57735027, 1
+    ]);
 
     return vertices;
-
-    function setVertexValues(i) {
-        for (var j = 0; j < 4; j++) {
-            vertices[4 * i + j] = getVertexValue(i, j);
-        }
-
-        function getVertexValue(i, j) {
-            var angle = Math.PI * i / 1.5;
-            switch (j) {
-                case 0: return Math.cos(angle);
-                case 1: return Math.sin(angle);
-                case 2: return 0;
-                default: return 1;
-            }
-        }
-    }
 }

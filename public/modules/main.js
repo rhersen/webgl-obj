@@ -1,8 +1,5 @@
-var textures = require('./textures');
-var imageFactory = require('./imageFactory');
 var webgl = require("webgl");
 
-textures.setImageFactory(imageFactory);
 var canvas = $('canvas#webgl');
 var gl = canvas[0].getContext("experimental-webgl");
 

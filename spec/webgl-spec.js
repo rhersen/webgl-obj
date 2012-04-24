@@ -1,5 +1,4 @@
 var target = require('../public/modules/webgl');
-var textures = require('../public/modules/textures');
 
 var nop = function () {
 };
@@ -53,8 +52,6 @@ var glMock = {
 var imageFactoryMock = {};
 
 imageFactoryMock.createImage = obj;
-
-textures.setImageFactory(imageFactoryMock);
 
 describe('webgl', function () {
     beforeEach(function () {
