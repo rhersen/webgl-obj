@@ -2,9 +2,10 @@ var shaders = require('./shaders');
 
 var gl;
 var yRotation;
+var model;
 
 function draw() {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, model.getFaces().length, gl.UNSIGNED_SHORT, 0);
 }
 
 function mousemove(x) {
@@ -19,8 +20,9 @@ function mousemove(x) {
     ]);
 }
 
-function init(context) {
+function init(context, parsed) {
     gl = context;
+    model = parsed;
     var program = shaders.setupProgram(gl);
     setupMatrices(program);
     setupVertices(program);
@@ -58,24 +60,10 @@ function setupVertices(program) {
     gl.enableVertexAttribArray(loc);
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
-    gl.bufferData(gl.ARRAY_BUFFER, getVertices(), gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, model.getVertices(), gl.DYNAMIC_DRAW);
 }
 
 function setupElements() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, getFaces(), gl.STATIC_DRAW);
-}
-function getFaces() {
-    return new Uint16Array([0, 2, 1, 0, 3, 2]);
-}
-
-function getVertices() {
-    var vertices = new Float32Array(4 * 4);
-    vertices.set([0.0000000e+0, 1.08866211, 0.0000000e+0, 1,
-         0.0000000e+0, -0.54433105, 1.15470054, 1,
-         -1.00000000, -0.54433105, -0.57735027, 1,
-         1.00000000, -0.54433105, -0.57735027, 1
-    ]);
-
-    return vertices;
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.getFaces(), gl.STATIC_DRAW);
 }

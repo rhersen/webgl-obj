@@ -1,9 +1,14 @@
 var webgl = require("webgl");
+var parser = require("parser");
 
 var canvas = $('canvas#webgl');
-var gl = canvas[0].getContext("experimental-webgl");
 
-webgl.init(gl);
+$.get('/tetrahedron.obj', '', function (data) {
+    var lines = data.split('\n').map(function (x) {
+        return x.trim();
+    });
+    webgl.init(canvas[0].getContext("experimental-webgl"), parser.parse(lines));
+}, 'text');
 
 canvas.mousemove(function (event) {
     var x = event.pageX - this.offsetLeft;
