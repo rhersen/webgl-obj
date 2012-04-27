@@ -99,11 +99,27 @@ describe('webgl', function () {
 
     it('yRotation matrix should be identity when mouse is in the middle', function () {
         target.mousemove(250, 250);
-        expect(Math.abs(called.uniformMatrix4fv['yRotation'][2])).toBeLessThan(1e-9);
+        var matrix4fv = called.uniformMatrix4fv['yRotation'];
+        for (var i = 0; i < 16; i++) {
+            expect(matrix4fv[i]).toBeCloseTo((i % 5) ? 0 : 1, 9);
+        }
     });
 
     it('should rotate when mouse is not in the middle', function () {
         target.mousemove(200, 200);
-        expect(called.uniformMatrix4fv['yRotation'][2]).toBeLessThan(0);
+        expect(called.uniformMatrix4fv['yRotation'][2]).toBeGreaterThan(0);
+    });
+
+    it('xRotation matrix should be identity when mouse is in the middle', function () {
+        target.mousemove(250, 250);
+        var matrix4fv = called.uniformMatrix4fv['xRotation'];
+        for (var i = 0; i < 16; i++) {
+            expect(matrix4fv[i]).toBeCloseTo((i % 5) ? 0 : 1, 9);
+        }
+    });
+
+    it('should rotate when mouse is not in the middle', function () {
+        target.mousemove(200, 200);
+        expect(called.uniformMatrix4fv['xRotation'][9]).toBeGreaterThan(0);
     });
 });

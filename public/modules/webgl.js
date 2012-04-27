@@ -1,6 +1,7 @@
 var shaders = require('./shaders');
 
 var gl;
+var xRotation;
 var yRotation;
 var model;
 
@@ -8,16 +9,32 @@ function draw() {
     gl.drawElements(gl.TRIANGLES, model.getFaces().length, gl.UNSIGNED_SHORT, 0);
 }
 
-function mousemove(x) {
-    var angle = -x * 2 * Math.PI / 500;
-    var c = Math.cos(angle);
-    var s = Math.sin(angle);
-    gl.uniformMatrix4fv(yRotation, false, [
-        c, 0, s, 0,
-        0, 1, 0, 0,
-        -s, 0, c, 0,
-        0, 0, 0, 1
-    ]);
+function mousemove(x, y) {
+    gl.uniformMatrix4fv(yRotation, false, getYRotation(sinCos(x)));
+    gl.uniformMatrix4fv(xRotation, false, getXRotation(sinCos(y)));
+
+    function getXRotation(p) {
+        return [
+            1, 0, 0, 0,
+            0, p.cos, -p.sin, 0,
+            0, p.sin, p.cos, 0,
+            0, 0, 0, 1
+        ];
+    }
+
+    function getYRotation(p) {
+        return [
+            p.cos, 0, p.sin, 0,
+            0, 1, 0, 0,
+            -p.sin, 0, p.cos, 0,
+            0, 0, 0, 1
+        ];
+    }
+
+    function sinCos(coordinate) {
+        var angle = (250 - coordinate) * 2 * Math.PI / 500;
+        return {cos:Math.cos(angle), sin:Math.sin(angle)};
+    }
 }
 
 function init(context, parsed) {
@@ -34,6 +51,7 @@ exports.mousemove = mousemove;
 exports.init = init;
 
 function setupMatrices(program) {
+    xRotation = gl.getUniformLocation(program, "xRotation");
     yRotation = gl.getUniformLocation(program, "yRotation");
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "perspective"), false, [
         2, 0, 0, 0,
@@ -46,6 +64,12 @@ function setupMatrices(program) {
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, -4, 1
+    ]);
+    gl.uniformMatrix4fv(xRotation, false, [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
     ]);
     gl.uniformMatrix4fv(yRotation, false, [
         1, 0, 0, 0,

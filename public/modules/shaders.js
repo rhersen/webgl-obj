@@ -9,16 +9,17 @@ function setupProgram(gl) {
         gl.attachShader(r, createShader(gl.VERTEX_SHADER,
             'uniform mat4 perspective;' +
                 'uniform mat4 view;' +
+                'uniform mat4 xRotation;' +
                 'uniform mat4 yRotation;' +
                 'attribute vec4 pos;' +
-                'void main() { gl_Position = perspective * view * yRotation * pos; }'));
+                'void main() { gl_Position = perspective * view * xRotation * yRotation * pos; }'));
 
         gl.attachShader(r, createShader(gl.FRAGMENT_SHADER,
             'precision mediump float;' +
                 'uniform vec4 color;' +
                 'void main() {' +
                 'gl_FragColor = ' +
-                'vec4(1, 0, 0, 1);' +
+                'vec4(0, 1, 0, 1);' +
                 '}'));
 
         gl.linkProgram(r);
