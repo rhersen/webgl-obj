@@ -14,7 +14,5 @@ canvas.mousemove(function (event) {
     var x = event.pageX - this.offsetLeft;
     var y = event.pageY - this.offsetTop;
     webgl.mousemove(x, y);
+    webgl.draw();
 });
-
-const DELAY = 56;
-setInterval(webgl.draw, DELAY);

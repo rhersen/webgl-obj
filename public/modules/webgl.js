@@ -51,27 +51,28 @@ exports.mousemove = mousemove;
 exports.init = init;
 
 function setupMatrices(program) {
-    xRotation = gl.getUniformLocation(program, "xRotation");
-    yRotation = gl.getUniformLocation(program, "yRotation");
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "perspective"), false, [
         2, 0, 0, 0,
         0, 2, 0, 0,
         0, 0, -1, -1,
         0, 0, -1, 0
     ]);
+
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "view"), false, [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, -4, 1
     ]);
-    gl.uniformMatrix4fv(xRotation, false, [
+
+    gl.uniformMatrix4fv(xRotation = gl.getUniformLocation(program, "xRotation"), false, [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, 0, 1
     ]);
-    gl.uniformMatrix4fv(yRotation, false, [
+
+    gl.uniformMatrix4fv(yRotation = gl.getUniformLocation(program, "yRotation"), false, [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
