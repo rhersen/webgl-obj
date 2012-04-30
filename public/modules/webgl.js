@@ -40,6 +40,9 @@ function mousemove(x, y) {
 function init(context, parsed) {
     gl = context;
     model = parsed;
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
     var program = shaders.setupProgram(gl);
     setupMatrices(program);
     setupVertices(program);
@@ -53,7 +56,7 @@ exports.init = init;
 function setupMatrices(program) {
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "perspective"), false, [
         2, 0, 0, 0,
-        0, 2, 0, 0,
+        0,32/9, 0, 0,
         0, 0, -1, -1,
         0, 0, -1, 0
     ]);
@@ -62,7 +65,7 @@ function setupMatrices(program) {
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
-        0, 0, -4, 1
+        0, 0, -8, 1
     ]);
 
     gl.uniformMatrix4fv(xRotation = gl.getUniformLocation(program, "xRotation"), false, [
