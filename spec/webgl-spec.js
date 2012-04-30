@@ -12,6 +12,8 @@ var called = {};
 var glMock = {
     createProgram:nop,
     createShader:nop,
+    enable:nop,
+    cullFace:nop,
     getShaderParameter:nop,
     shaderSource:nop,
     compileShader:nop,
