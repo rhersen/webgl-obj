@@ -47,6 +47,8 @@ function init(context, parsed) {
     setupMatrices(program);
     setupVertices(program);
     setupElements();
+    mousemove(250, 250);
+    draw();
 }
 
 exports.draw = draw;

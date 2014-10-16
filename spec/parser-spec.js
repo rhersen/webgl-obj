@@ -21,6 +21,16 @@ describe('parser', function () {
         expect(result[8]).toBeCloseTo(-1, 6);
     });
 
+    it('should return normals', function () {
+        var model = target.parse(fixture);
+        var result = model.getNormals();
+        expect(result.length).toEqual(12);
+        expect(result[1]).toBeCloseTo(1.09, 6);
+        expect(result[6]).toBeCloseTo(1.155, 6);
+        expect(result[7]).toBeCloseTo(1, 6);
+        expect(result[8]).toBeCloseTo(-1, 6);
+    });
+
     it('should return faces', function () {
         var model = target.parse(fixture);
         var result = model.getFaces();

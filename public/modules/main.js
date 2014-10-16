@@ -11,7 +11,7 @@ var vertexLoaded = function (data) {
 
 var fragmentLoaded = function (data) {
     shaders.setFragment(data);
-    $.get('/tetrahedron.obj', '', modelLoaded, 'text');
+    $.get('/cube.obj', '', modelLoaded, 'text');
 };
 
 var modelLoaded = function (data) {

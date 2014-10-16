@@ -7,5 +7,5 @@ attribute vec4 pos;
 
 void main() {
   gl_Position = perspective * view * xRotation * yRotation * pos;
-  color = pos;
+  color = vec4(1.0, 0.5, 1.0, 1.0);
 }
